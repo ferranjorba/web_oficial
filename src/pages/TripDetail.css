@@ -1,0 +1,17 @@
+.trip-detail__hero { position: relative; height: 60vh; display: flex; align-items: flex-end; overflow: hidden; }
+.trip-detail__hero-img { position: absolute; inset: 0; background: linear-gradient(135deg, #2D4A6B 0%, #4A7FA5 100%); }
+.trip-detail__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,25,35,.85), transparent); }
+.trip-detail__hero-content { position: relative; z-index: 1; padding-bottom: 60px; color: white; }
+.trip-detail__hero-content h1 { font-family: var(--font-head); font-size: 3rem; margin: 8px 0; }
+.trip-detail__hero-content p { color: rgba(255,255,255,.8); font-size: 1.1rem; }
+.trip-detail__rating { margin-top: 12px; color: var(--color-gold); font-weight: 600; }
+.trip-detail__body { display: grid; grid-template-columns: 1fr 340px; gap: 60px; padding: 60px 24px; }
+.trip-detail__main h2 { font-family: var(--font-head); font-size: 1.8rem; margin-bottom: 16px; color: var(--color-dark); }
+.trip-detail__main h3 { font-family: var(--font-head); font-size: 1.3rem; margin: 32px 0 12px; color: var(--color-dark); }
+.trip-detail__main p { color: var(--color-text-light); line-height: 1.8; }
+.trip-booking-card { background: var(--color-white); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-md); position: sticky; top: 100px; }
+.trip-booking-card__price { font-size: 1rem; color: var(--color-text-light); margin-bottom: 24px; }
+.trip-booking-card__price strong { font-size: 2rem; color: var(--color-dark); font-family: var(--font-head); }
+.trip-booking-card__price span { font-size: .85rem; }
+.trip-not-found { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; min-height: 60vh; }
+@media (max-width: 768px) { .trip-detail__body { grid-template-columns: 1fr; } }

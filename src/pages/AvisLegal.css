@@ -1,0 +1,6 @@
+.legal-page { padding: 160px 0 100px; }
+.legal-page__content { max-width: 800px; }
+.legal-page__updated { color: var(--color-text-light); font-size: .85rem; margin-bottom: 48px; }
+.legal-page__content section { margin-bottom: 40px; }
+.legal-page__content h2 { font-family: var(--font-head); font-size: 1.3rem; color: var(--color-dark); margin-bottom: 12px; }
+.legal-page__content p { color: var(--color-text-light); line-height: 1.8; }
