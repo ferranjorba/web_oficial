@@ -1,17 +1,116 @@
-.trip-detail__hero { position: relative; height: 60vh; display: flex; align-items: flex-end; overflow: hidden; }
-.trip-detail__hero-img { position: absolute; inset: 0; background: linear-gradient(135deg, #2D4A6B 0%, #4A7FA5 100%); }
-.trip-detail__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,25,35,.85), transparent); }
+.trip-detail__hero { position: relative; height: 65vh; display: flex; align-items: flex-end; overflow: hidden; }
+.trip-detail__hero-img { position: absolute; inset: 0; background: linear-gradient(135deg, #1a3a5c 0%, #2D6A9F 50%, #4A90C4 100%); }
+.trip-detail__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,20,35,.9) 0%, rgba(10,20,35,.3) 100%); }
 .trip-detail__hero-content { position: relative; z-index: 1; padding-bottom: 60px; color: white; }
-.trip-detail__hero-content h1 { font-family: var(--font-head); font-size: 3rem; margin: 8px 0; }
-.trip-detail__hero-content p { color: rgba(255,255,255,.8); font-size: 1.1rem; }
-.trip-detail__rating { margin-top: 12px; color: var(--color-gold); font-weight: 600; }
-.trip-detail__body { display: grid; grid-template-columns: 1fr 340px; gap: 60px; padding: 60px 24px; }
-.trip-detail__main h2 { font-family: var(--font-head); font-size: 1.8rem; margin-bottom: 16px; color: var(--color-dark); }
-.trip-detail__main h3 { font-family: var(--font-head); font-size: 1.3rem; margin: 32px 0 12px; color: var(--color-dark); }
-.trip-detail__main p { color: var(--color-text-light); line-height: 1.8; }
-.trip-booking-card { background: var(--color-white); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-md); position: sticky; top: 100px; }
-.trip-booking-card__price { font-size: 1rem; color: var(--color-text-light); margin-bottom: 24px; }
-.trip-booking-card__price strong { font-size: 2rem; color: var(--color-dark); font-family: var(--font-head); }
-.trip-booking-card__price span { font-size: .85rem; }
+.trip-detail__country { font-size: .8rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; }
+.trip-detail__hero-content h1 { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3.5rem); margin-bottom: 12px; line-height: 1.15; }
+.trip-detail__tagline { color: rgba(255,255,255,.8); font-size: 1.1rem; margin-bottom: 24px; }
+.trip-detail__hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+.trip-detail__hero-meta span { font-size: .88rem; color: rgba(255,255,255,.75); }
+
+/* Highlights bar */
+.trip-detail__highlights { background: var(--color-primary); padding: 20px 0; }
+.trip-detail__highlights .container { display: flex; flex-wrap: wrap; gap: 20px 40px; }
+.highlight-item { display: flex; align-items: center; gap: 8px; color: white; font-size: .85rem; font-weight: 500; }
+.highlight-check { font-weight: 700; color: var(--color-gold); }
+
+/* Body layout */
+.trip-detail__body { display: grid; grid-template-columns: 1fr 360px; gap: 60px; padding: 60px 24px 100px; align-items: start; }
+
+/* Sections */
+.trip-section { margin-bottom: 56px; }
+.trip-section h2 { font-family: var(--font-head); font-size: 1.7rem; color: var(--color-dark); margin-bottom: 28px; padding-bottom: 12px; border-bottom: 2px solid var(--color-border); }
+.trip-section h3 { font-family: var(--font-head); font-size: 1.1rem; color: var(--color-dark); }
+.trip-section--notes { background: #FFF9F0; border-radius: var(--radius-md); padding: 28px 32px; }
+.trip-section--notes h2 { border-bottom-color: #F5B84940; }
+.trip-section--notes ul { display: flex; flex-direction: column; gap: 10px; }
+.trip-section--notes li { font-size: .9rem; color: var(--color-text-light); line-height: 1.6; }
+
+/* Itinerary */
+.itinerary { display: flex; flex-direction: column; gap: 0; }
+.itinerary__day { display: flex; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--color-border); }
+.itinerary__day:last-child { border-bottom: none; }
+.itinerary__day-num { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 52px; text-align: center; padding-top: 4px; }
+.itinerary__day-num span { font-size: .65rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-light); }
+.itinerary__day-num strong { font-family: var(--font-head); font-size: 1.8rem; color: var(--color-primary); line-height: 1; }
+.itinerary__day-content { flex: 1; }
+.itinerary__day-content h3 { font-family: var(--font-head); font-size: 1.05rem; color: var(--color-dark); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.itinerary__km { font-family: var(--font-body); font-size: .75rem; background: var(--color-border); color: var(--color-text-light); padding: 2px 10px; border-radius: 100px; font-weight: 500; }
+.itinerary__day-content p { font-size: .9rem; color: var(--color-text-light); line-height: 1.8; }
+
+/* Included list */
+.trip-list { display: flex; flex-direction: column; gap: 10px; }
+.trip-list li { display: flex; gap: 10px; font-size: .9rem; color: var(--color-text); line-height: 1.6; align-items: flex-start; }
+.check-green { color: #16A34A; font-weight: 700; flex-shrink: 0; }
+.check-red { color: #DC2626; font-weight: 700; flex-shrink: 0; }
+
+/* Optional */
+.optional-card { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px 24px; }
+.optional-card strong { display: block; color: var(--color-dark); margin-bottom: 6px; }
+.optional-card p { font-size: .85rem; color: var(--color-text-light); line-height: 1.6; }
+.optional-price { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; color: var(--color-primary); white-space: nowrap; }
+
+/* Sidebar */
+.trip-detail__sidebar { position: sticky; top: 100px; }
+.trip-booking-card { background: var(--color-white); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow-md); border: 1px solid var(--color-border); }
+.trip-booking-card__label { font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-light); margin-bottom: 16px; }
+.trip-booking-card__prices { margin-bottom: 28px; display: flex; flex-direction: column; gap: 8px; }
+.price-row { display: flex; justify-content: space-between; align-items: center; font-size: .9rem; color: var(--color-text-light); padding: 6px 0; border-bottom: 1px solid var(--color-border); }
+.price-row:last-child { border-bottom: none; }
+.price-row--main { font-size: 1.1rem; }
+.price-row--main strong { font-family: var(--font-head); font-size: 2rem; color: var(--color-dark); }
+.price-row--taxes { color: #9CA3AF; font-size: .8rem; }
+.price-row em { font-size: .75rem; }
+
+/* Departures */
+.trip-departures { margin-top: 28px; border-top: 1px solid var(--color-border); padding-top: 24px; }
+.trip-departures h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-light); margin-bottom: 16px; }
+.departures-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; }
+.departure-item { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .83rem; padding: 4px 0; }
+.departure-date { font-weight: 600; color: var(--color-dark); min-width: 48px; }
+.departure-supplement { color: var(--color-primary); font-weight: 600; }
+.departure-tag { font-size: .7rem; background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 100px; }
+.departure-note { font-size: .72rem; color: var(--color-text-light); font-style: italic; }
+.departure-item.no-quota .departure-date { color: var(--color-text-light); }
+.departure-item.is-closed .departure-date { color: var(--color-text-light); }
+.departure-status { font-size: .7rem; padding: 2px 8px; border-radius: 100px; font-weight: 600; }
+.departure-status.status-open   { background: #D1FAE5; color: #065F46; }
+.departure-status.status-closed { background: #FEE2E2; color: #991B1B; }
+.departure-flight-open { font-size: .68rem; background: #EFF6FF; color: #1D4ED8; padding: 2px 7px; border-radius: 100px; font-weight: 500; }
+
+/* Flight info */
+.trip-flight-info { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+.trip-flight-info h4 { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-text-light); margin-bottom: 12px; }
+.flight-airline { font-weight: 700; color: var(--color-primary); font-size: .85rem; margin-bottom: 10px; }
+.flight-leg { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; border-bottom: 1px solid var(--color-border); }
+.flight-leg:last-of-type { border-bottom: none; }
+.flight-route { font-weight: 600; color: var(--color-dark); font-size: .88rem; }
+.flight-times { font-size: .82rem; color: var(--color-text-light); }
+.flight-number { font-size: .75rem; color: var(--color-text-light); }
+.flight-season { font-size: .73rem; color: var(--color-text-light); font-style: italic; margin-top: 8px; }
+
+/* Guarantee */
+.trip-booking-card__guarantee { font-size: .75rem; color: var(--color-text-light); margin-top: 16px; text-align: center; line-height: 1.5; }
+
+/* Coming soon */
+.trip-section--coming-soon { background: #F9FAFB; border-radius: var(--radius-md); padding: 40px 32px; text-align: center; color: var(--color-text-light); }
+
+/* Scenic route highlight */
+.highlight-check--route { font-size: .9rem; }
+
+/* Why this tour */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.why-card { background: #F9FAFB; border-radius: var(--radius-md); padding: 24px; border-left: 3px solid var(--color-primary); }
+.why-card h3 { font-family: var(--font-head); font-size: 1rem; color: var(--color-dark); margin-bottom: 10px; }
+.why-card p { font-size: .88rem; color: var(--color-text-light); line-height: 1.7; }
+@media (max-width: 768px) { .why-grid { grid-template-columns: 1fr; } }
+
+/* Not found */
 .trip-not-found { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; min-height: 60vh; }
-@media (max-width: 768px) { .trip-detail__body { grid-template-columns: 1fr; } }
+
+@media (max-width: 1024px) { .trip-detail__body { grid-template-columns: 1fr; } .trip-detail__sidebar { position: static; } }
+@media (max-width: 768px) {
+  .trip-detail__highlights .container { gap: 12px 20px; }
+  .itinerary__day { flex-direction: column; gap: 8px; }
+  .itinerary__day-num { flex-direction: row; gap: 8px; align-items: baseline; }
+}

@@ -26,15 +26,11 @@ export default function ContactPage() {
             <div className="contact__details">
               <div className="contact-item">
                 <span className="contact-icon">📞</span>
-                <div><strong>Telèfon</strong><span>+34 000 000 000</span></div>
-              </div>
-              <div className="contact-item">
-                <span className="contact-icon">✉️</span>
-                <div><strong>Email</strong><span>hola@nomAgencia.com</span></div>
+                <div><strong>Telèfon</strong><span>935 87 20 79</span></div>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📍</span>
-                <div><strong>Oficina</strong><span>Carrer Exemple, 00 — Barcelona</span></div>
+                <div><strong>Oficina</strong><span>C/ Llobateras, 49 — 08191 Rubí, Barcelona</span></div>
               </div>
             </div>
           </div>

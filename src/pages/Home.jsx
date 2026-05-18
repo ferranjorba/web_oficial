@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { destinations } from '../data/destinations'
 import './Home.css'
 
-const FILTERS = ['all', 'europa', 'asia', 'america', 'africa']
-const FILTER_LABELS = { all: 'Totes', europa: 'Europa', asia: 'Àsia', america: 'Amèrica', africa: 'Àfrica' }
+const FILTERS = ['all', 'europa']
+const FILTER_LABELS = { all: 'Totes', europa: 'Europa' }
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -81,10 +81,9 @@ export default function Home() {
       <section className="stats">
         <div className="container stats__grid">
           {[
-            { n: '+500',    l: 'Destinacions' },
-            { n: '+12.000', l: 'Clients satisfets' },
-            { n: '15',      l: 'Anys d\'experiència' },
-            { n: '98%',     l: 'Valoració positiva' },
+            { n: '2 pax',   l: 'Sortida garantida' },
+            { n: 'Màx. 25', l: 'Passatgers per grup' },
+            { n: 'Directe', l: 'Vol BCN → Ljubljana divendres' },
           ].map(({ n, l }) => (
             <div key={l} className="stat-item fade-in">
               <span className="stat-number">{n}</span>
@@ -126,12 +125,15 @@ export default function Home() {
                 <div className="dest-card__info">
                   <div className="dest-card__meta">
                     <span className="dest-card__country">{dest.country}</span>
-                    <span className="dest-card__rating">★ {dest.rating}</span>
+                    {dest.rating && <span className="dest-card__rating">★ {dest.rating}</span>}
                   </div>
                   <h3 className="dest-card__name">{dest.name}</h3>
                   <p className="dest-card__desc">{dest.description}</p>
                   <div className="dest-card__footer">
-                    <span className="dest-card__price">Des de <strong>{dest.price}€</strong></span>
+                    {dest.price
+                      ? <span className="dest-card__price">Des de <strong>{dest.price.toLocaleString('ca')}€</strong></span>
+                      : <span className="dest-card__price dest-card__price--consult">Preu a consultar</span>
+                    }
                     <Link to={`/viatge/${dest.id}`} className="btn btn--sm btn--primary">Descobrir</Link>
                   </div>
                 </div>
@@ -145,22 +147,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SERVEIS */}
+      {/* PER QUÈ 747 VIATGES */}
       <section className="services" id="services">
         <div className="container">
           <div className="section-header">
-            <p className="section-tag">Què oferim</p>
-            <h2 className="section-title">Viatges a la teva mida</h2>
-            <p className="section-subtitle">Cuidem cada detall perquè tu només hagis de gaudir.</p>
+            <p className="section-tag">Per què triar-nos</p>
+            <h2 className="section-title">El que ens fa diferents</h2>
           </div>
           <div className="services__grid">
             {[
-              { icon: '✈️', title: 'Viatges a mida',     desc: 'Dissenyem el teu itinerari perfecte des de zero, adaptat als teus gustos i pressupost.' },
-              { icon: '🏨', title: 'Hotels seleccionats', desc: 'Allotjaments únics i verificats, des de boutique hotels fins a resorts de luxe.' },
-              { icon: '🗺️', title: 'Guies locals',        desc: 'Experts locals que et mostren els secrets amagats de cada destinació.' },
-              { icon: '🛡️', title: 'Viatge segur',        desc: 'Assegurança integral i assistència 24h durant tot el teu viatge.' },
-              { icon: '👨‍👩‍👧‍👦', title: 'Viatges en grup',   desc: 'Circuit en grup reduït per connectar amb altres viatgers d\'arreu del món.' },
-              { icon: '💍', title: 'Llunes de mel',       desc: 'Experiències exclusives i detalls especials per a la vostra escapada més romàntica.' },
+              { icon: '✅', title: 'Sortida garantida',      desc: 'Els nostres circuits surten garantits amb un mínim de 2 passatgers. Sense cancel·lacions per falta de grup.' },
+              { icon: '✈️', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu des de Barcelona a Ljubljana amb Trade Air tots els divendres de juny a setembre.' },
+              { icon: '🏨', title: 'Hotels cèntrics',        desc: 'Allotjaments cèntrics o semi-cèntrics perquè aprofitis al màxim cada destinació.' },
+              { icon: '👥', title: 'Grups tancats',          desc: 'Màxim 25 passatgers per circuit. Comoditat, atenció personalitzada i grup reduït.' },
             ].map(s => (
               <div key={s.title} className="service-card fade-in">
                 <span className="service-card__icon">{s.icon}</span>
@@ -178,56 +177,13 @@ export default function Home() {
           <div className="about__visual fade-in">
             <div className="about__img-main about__img--placeholder" />
             <div className="about__img-secondary about__img--placeholder" />
-            <div className="about__badge-floating">
-              <span className="badge-number">15</span>
-              <span className="badge-text">anys creant<br/>somnis</span>
-            </div>
           </div>
           <div className="about__content fade-in">
             <p className="section-tag">Qui som</p>
-            <h2 className="section-title">Apassionats dels viatges des del primer dia</h2>
-            <p>Som un equip de viatgers que va convertir la seva passió en professió. Coneixem de primera mà cada destinació que recomanem perquè l'hem viscut.</p>
-            <p>La nostra missió és simple: que cada client torni a casa amb un somriure i ganes de tornar a sortir.</p>
-            <ul className="about__features">
-              {[
-                'Atenció personalitzada des del primer contacte',
-                'Pressupost sense compromís en 24h',
-                'Suport continu durant el viatge',
-                'Garantia de preu millor',
-              ].map(f => (
-                <li key={f}><span className="check">✓</span> {f}</li>
-              ))}
-            </ul>
-            <Link to="/contacte" className="btn btn--primary">Coneix el nostre equip</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIS */}
-      <section className="testimonials" id="testimonials">
-        <div className="container">
-          <div className="section-header">
-            <p className="section-tag">El que diuen de nosaltres</p>
-            <h2 className="section-title">Viatgers feliços</h2>
-          </div>
-          <div className="testimonials__grid">
-            {[
-              { text: '"Van organitzar el nostre viatge de noces a Maldives i va ser perfecte. Cada detall cuidat al màxim. 100% recomanables."', author: 'Anna & Marc', trip: 'Maldives · Juny 2024' },
-              { text: '"El viatge al Japó va superar totes les expectatives. L\'itinerari era perfecte i els hotels increïbles. Repetirem!"', author: 'Jordi Puig', trip: 'Japó · Abril 2024' },
-              { text: '"Portàvem anys intentant organitzar el safari i no ens atrevíem. Va ser l\'experiència de la nostra vida."', author: 'Família Roca', trip: 'Kenya · Agost 2024' },
-            ].map(t => (
-              <div key={t.author} className="testimonial-card fade-in">
-                <div className="testimonial-card__stars">★★★★★</div>
-                <p className="testimonial-card__text">{t.text}</p>
-                <div className="testimonial-card__author">
-                  <div className="author-avatar author-avatar--placeholder" />
-                  <div>
-                    <strong>{t.author}</strong>
-                    <span>{t.trip}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+            <h2 className="section-title">747 Viatges S.L.</h2>
+            <p>Agència de viatges especialitzada en circuits guiats per Eslovènia, Croàcia i Islàndia des de Barcelona.</p>
+            <p>C/ Llobateras, 49 · 08191 Rubí, Barcelona<br />Tel. 935 87 20 79</p>
+            <Link to="/contacte" className="btn btn--primary" style={{ marginTop: '8px' }}>Contacta amb nosaltres</Link>
           </div>
         </div>
       </section>

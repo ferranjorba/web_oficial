@@ -7,55 +7,43 @@ export default function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <Link to="/" className="navbar__logo">
-            <span className="logo-text">NomAgència</span>
+            <span className="logo-text">747 Viatges</span>
           </Link>
-          <p>Creant experiències de viatge úniques des del 2009. El món és gran, t'ajudem a descobrir-lo.</p>
-          <div className="footer__social">
-            <a href="#" aria-label="Instagram">IG</a>
-            <a href="#" aria-label="Facebook">FB</a>
-            <a href="#" aria-label="TikTok">TK</a>
-            <a href="#" aria-label="YouTube">YT</a>
-          </div>
+          <p>Agència de viatges especialitzada en circuits guiats per Eslovènia, Croàcia i Islàndia des de Barcelona.</p>
         </div>
 
         <div className="footer__links">
-          <h4>Destinacions</h4>
+          <h4>Circuits</h4>
           <ul>
-            <li><Link to="/categoria/europa">Europa</Link></li>
-            <li><Link to="/categoria/asia">Àsia</Link></li>
-            <li><Link to="/categoria/america">Amèrica</Link></li>
-            <li><Link to="/categoria/africa">Àfrica</Link></li>
-            <li><Link to="/categoria/oceania">Oceania</Link></li>
+            <li><Link to="/viatge/joies-islandia">Joies d'Islàndia</Link></li>
+            <li><Link to="/viatge/gran-tour-odin">Gran Tour d'Odín</Link></li>
+            <li><Link to="/categoria/europa">Tots els circuits</Link></li>
           </ul>
         </div>
 
         <div className="footer__links">
-          <h4>Serveis</h4>
+          <h4>Contacte</h4>
           <ul>
-            <li><a href="#">Viatges a mida</a></li>
-            <li><a href="#">Llunes de mel</a></li>
-            <li><a href="#">Grups</a></li>
-            <li><a href="#">Viatges empresa</a></li>
-            <li><a href="#">Assegurances</a></li>
+            <li><a href="tel:935872079">935 87 20 79</a></li>
+            <li><span>C/ Llobateras, 49</span></li>
+            <li><span>08191 Rubí, Barcelona</span></li>
           </ul>
         </div>
 
         <div className="footer__links">
-          <h4>Empresa</h4>
+          <h4>Legal</h4>
           <ul>
             <li><a href="/#about">Qui som</a></li>
-            <li><a href="#">Blog de viatges</a></li>
-            <li><a href="#">Treballa amb nosaltres</a></li>
             <li><Link to="/avis-legal">Avís legal</Link></li>
-            <li><a href="#">Política de privacitat</a></li>
+            <li><Link to="/contacte">Contacte</Link></li>
           </ul>
         </div>
       </div>
 
       <div className="footer__bottom">
         <div className="container">
-          <p>© {new Date().getFullYear()} NomAgència. Tots els drets reservats.</p>
-          <p>LICENCIA TURISMO: XXXXX</p>
+          <p>© {new Date().getFullYear()} 747 Viatges S.L. Tots els drets reservats.</p>
+          <p>C/ Llobateras, 49 · 08191 Rubí (Barcelona) · 935 87 20 79</p>
         </div>
       </div>
     </footer>

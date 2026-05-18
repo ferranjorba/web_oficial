@@ -2,14 +2,22 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { destinations } from '../data/destinations'
 import './SearchResults.css'
 
+function normalitza(str) {
+  return str
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+}
+
 export default function SearchResults() {
   const [params] = useSearchParams()
   const query = params.get('q') || ''
+  const q = normalitza(query)
 
   const results = destinations.filter(d =>
-    d.name.toLowerCase().includes(query.toLowerCase()) ||
-    d.country.toLowerCase().includes(query.toLowerCase()) ||
-    d.category.toLowerCase().includes(query.toLowerCase())
+    normalitza(d.name).includes(q) ||
+    normalitza(d.country).includes(q) ||
+    normalitza(d.category).includes(q)
   )
 
   return (
@@ -29,12 +37,15 @@ export default function SearchResults() {
             <div className="dest-card__info">
               <div className="dest-card__meta">
                 <span className="dest-card__country">{dest.country}</span>
-                <span className="dest-card__rating">★ {dest.rating}</span>
+                {dest.rating && <span className="dest-card__rating">★ {dest.rating}</span>}
               </div>
               <h3 className="dest-card__name">{dest.name}</h3>
               <p className="dest-card__desc">{dest.description}</p>
               <div className="dest-card__footer">
-                <span className="dest-card__price">Des de <strong>{dest.price}€</strong></span>
+                {dest.price
+                  ? <span className="dest-card__price">Des de <strong>{dest.price.toLocaleString('ca')}€</strong></span>
+                  : <span className="dest-card__price dest-card__price--consult">Preu a consultar</span>
+                }
                 <Link to={`/viatge/${dest.id}`} className="btn btn--sm btn--primary">Descobrir</Link>
               </div>
             </div>
