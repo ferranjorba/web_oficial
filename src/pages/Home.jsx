@@ -156,10 +156,10 @@ export default function Home() {
           </div>
           <div className="services__grid">
             {[
-              { icon: '✅', title: 'Sortida garantida',      desc: 'Els nostres circuits surten garantits amb un mínim de 2 passatgers. Sense cancel·lacions per falta de grup.' },
-              { icon: '✈️', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu des de Barcelona a Ljubljana amb Trade Air tots els divendres de juny a setembre.' },
-              { icon: '🏨', title: 'Hotels cèntrics',        desc: 'Allotjaments cèntrics o semi-cèntrics perquè aprofitis al màxim cada destinació.' },
-              { icon: '👥', title: 'Grups tancats',          desc: 'Màxim 25 passatgers per circuit. Comoditat, atenció personalitzada i grup reduït.' },
+              { icon: '', title: 'Sortida garantida',      desc: 'Els nostres circuits surten garantits amb un mínim de 2 passatgers. Sense cancel·lacions per falta de grup.' },
+              { icon: '', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu des de Barcelona a Ljubljana amb Trade Air tots els divendres de juny a setembre.' },
+              { icon: '', title: 'Hotels cèntrics',        desc: 'Allotjaments cèntrics o semi-cèntrics perquè aprofitis al màxim cada destinació.' },
+              { icon: '', title: 'Grups tancats',          desc: 'Màxim 25 passatgers per circuit. Comoditat, atenció personalitzada i grup reduït.' },
             ].map(s => (
               <div key={s.title} className="service-card fade-in">
                 <span className="service-card__icon">{s.icon}</span>
@@ -181,7 +181,7 @@ export default function Home() {
           <div className="about__content fade-in">
             <p className="section-tag">Qui som</p>
             <h2 className="section-title">747 Viatges S.L.</h2>
-            <p>Agència de viatges especialitzada en circuits guiats per Eslovènia, Croàcia i Islàndia des de Barcelona.</p>
+            <p>Descripció pendent a preguntar</p>
             <p>C/ Llobateras, 49 · 08191 Rubí, Barcelona<br />Tel. 935 87 20 79</p>
             <Link to="/contacte" className="btn btn--primary" style={{ marginTop: '8px' }}>Contacta amb nosaltres</Link>
           </div>

@@ -1,5 +1,5 @@
 .trip-detail__hero { position: relative; height: 65vh; display: flex; align-items: flex-end; overflow: hidden; }
-.trip-detail__hero-img { position: absolute; inset: 0; background: linear-gradient(135deg, #1a3a5c 0%, #2D6A9F 50%, #4A90C4 100%); }
+.trip-detail__hero-img { position: absolute; inset: 0; background: linear-gradient(135deg, #1a3a5c 0%, #2D6A9F 50%, #4A90C4 100%); background-size: cover; background-position: center; }
 .trip-detail__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,20,35,.9) 0%, rgba(10,20,35,.3) 100%); }
 .trip-detail__hero-content { position: relative; z-index: 1; padding-bottom: 60px; color: white; }
 .trip-detail__country { font-size: .8rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; }

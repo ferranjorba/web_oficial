@@ -27,7 +27,10 @@ export default function TripDetail() {
 
       {/* HERO */}
       <div className="trip-detail__hero">
-        <div className="trip-detail__hero-img" />
+        <div
+          className="trip-detail__hero-img"
+          style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
+        />
         <div className="trip-detail__hero-overlay" />
         <div className="container trip-detail__hero-content">
           <p className="trip-detail__country">{trip.country}{trip.duration ? ` · ${trip.duration}` : ''}</p>
