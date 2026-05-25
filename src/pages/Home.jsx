@@ -120,7 +120,10 @@ export default function Home() {
                 key={dest.id}
                 className={`dest-card fade-in ${dest.featured ? 'dest-card--featured' : ''}`}
               >
-                <div className="dest-card__img dest-card__img--placeholder" />
+                <div
+                  className={`dest-card__img ${dest.image ? '' : 'dest-card__img--placeholder'}`}
+                  style={dest.image ? { backgroundImage: `url(${dest.image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+                />
                 {dest.featured && <div className="dest-card__badge">Més popular</div>}
                 <div className="dest-card__info">
                   <div className="dest-card__meta">
