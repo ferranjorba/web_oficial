@@ -24,7 +24,7 @@ export default function AvisLegal() {
         </section>
         <section>
           <h2>5. Llicència turística</h2>
-          <p>Número de llicència: XXXXX. Registre d'agències de viatge de Catalunya.</p>
+          <p>Número de llicència: GC 2061. Registre d'agències de viatge de Catalunya.</p>
         </section>
       </div>
     </main>
