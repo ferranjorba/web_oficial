@@ -1,7 +1,25 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { destinations, SUBCATS } from '../data/destinations'
 import './Home.css'
+
+function normalitza(str) {
+  if (!str) return ''
+  return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+}
+
+function searchTrips(query, max = 6) {
+  const q = normalitza(query.trim())
+  if (q.length < 1) return []
+  return destinations
+    .filter(d =>
+      normalitza(d.name).includes(q) ||
+      normalitza(d.country).includes(q) ||
+      normalitza(d.tagline || '').includes(q) ||
+      normalitza(d.description || '').includes(q)
+    )
+    .slice(0, max)
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const MONTHS_CA = ['gen','feb','mar','abr','mai','jun','jul','ago','set','oct','nov','des']
@@ -40,11 +58,37 @@ function hasGuaranteed(trip) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [searchWhere, setSearchWhere] = useState('')
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const searchWrapRef = useRef(null)
   const navigate = useNavigate()
+
+  const suggestions = showSuggestions ? searchTrips(searchWhere) : []
+
+  useEffect(() => {
+    function onClickOutside(e) {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
 
   const handleSearch = (e) => {
     e.preventDefault()
+    setShowSuggestions(false)
     if (searchWhere.trim()) navigate(`/cerca?q=${encodeURIComponent(searchWhere)}`)
+  }
+
+  const handleSearchChange = (e) => {
+    setSearchWhere(e.target.value)
+    setShowSuggestions(true)
+  }
+
+  const pickSuggestion = (trip) => {
+    setShowSuggestions(false)
+    setSearchWhere('')
+    navigate(`/viatge/${trip.id}`)
   }
 
   const tripMap = Object.fromEntries(destinations.map(d => [d.id, d]))
@@ -69,26 +113,45 @@ export default function Home() {
             <a href="#categories" className="btn btn--primary">Veure destinacions</a>
             <Link to="/contacte" className="btn btn--ghost">Parla amb un expert</Link>
           </div>
-          <form className="hero__search" onSubmit={handleSearch}>
-            <div className="search-field">
-              <label>On vols anar?</label>
-              <input
-                type="text"
-                placeholder="Destinació, país..."
-                value={searchWhere}
-                onChange={e => setSearchWhere(e.target.value)}
-              />
-            </div>
-            <div className="search-field">
-              <label>Quan?</label>
-              <input type="text" placeholder="Dates del viatge" />
-            </div>
-            <div className="search-field">
-              <label>Viatgers</label>
-              <input type="text" placeholder="1 adult" />
-            </div>
-            <button type="submit" className="btn btn--primary search-btn">Buscar</button>
-          </form>
+          <div className="hero__search-wrap" ref={searchWrapRef}>
+            <form className="hero__search" onSubmit={handleSearch}>
+              <div className="search-field">
+                <label>On vols anar?</label>
+                <input
+                  type="text"
+                  placeholder="Islàndia, Noruega, Eslovènia..."
+                  value={searchWhere}
+                  onChange={handleSearchChange}
+                  onFocus={() => searchWhere.length > 0 && setShowSuggestions(true)}
+                  onKeyDown={e => e.key === 'Escape' && setShowSuggestions(false)}
+                  autoComplete="off"
+                />
+              </div>
+              <button type="submit" className="btn btn--primary search-btn">Buscar</button>
+            </form>
+
+            {suggestions.length > 0 && (
+              <ul className="search-suggestions">
+                {suggestions.map(trip => (
+                  <li key={trip.id} className="search-suggestion" onMouseDown={() => pickSuggestion(trip)}>
+                    <div
+                      className="search-suggestion__img"
+                      style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
+                    />
+                    <div className="search-suggestion__info">
+                      <span className="search-suggestion__name">{trip.name}</span>
+                      <span className="search-suggestion__meta">
+                        {trip.country}{trip.duration ? ` · ${trip.duration}` : ''}
+                      </span>
+                    </div>
+                    <span className="search-suggestion__price">
+                      {trip.price ? `Des de ${trip.price.toLocaleString('ca')} €` : 'Preu a consultar'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
         <div className="hero__scroll">
           <div className="scroll-line" />
