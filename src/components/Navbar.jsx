@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { SUBCATS } from '../data/destinations'
 import './Navbar.css'
 
@@ -25,13 +25,28 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', onClickOutside)
   }, [])
 
+  const location = useLocation()
+  const navigate  = useNavigate()
+
   const closeAll = () => { setMenuOpen(false); setDropOpen(false) }
+  const goHome   = () => { closeAll(); window.scrollTo({ top: 0, behavior: 'smooth' }) }
+
+  const goToAbout = (e) => {
+    e.preventDefault()
+    closeAll()
+    if (location.pathname === '/') {
+      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      sessionStorage.setItem('scrollToId', 'about')
+      navigate('/')
+    }
+  }
 
   return (
     <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="container navbar__inner">
 
-        <Link to="/" className="navbar__logo" onClick={closeAll}>
+        <Link to="/" className="navbar__logo" onClick={goHome}>
           <img src="/logo-goodtravels.png" alt="Good Travels" />
         </Link>
 
@@ -73,7 +88,7 @@ export default function Navbar() {
           </div>
 
           <Link to="/#services" onClick={closeAll}>Inici</Link>
-          <Link to="/#about"    onClick={closeAll}>Nosaltres</Link>
+          <a href="#about" onClick={goToAbout}>Nosaltres</a>
           <Link to="/contacte" className="btn btn--outline navbar__cta" onClick={closeAll}>
             Contacte
           </Link>

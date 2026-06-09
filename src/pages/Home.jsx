@@ -91,6 +91,17 @@ export default function Home() {
     navigate(`/viatge/${trip.id}`)
   }
 
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) }
+      }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
   const tripMap = Object.fromEntries(destinations.map(d => [d.id, d]))
 
   return (
@@ -166,8 +177,8 @@ export default function Home() {
             { n: 'Màxim 25',      l: 'Persones per grup' },
             { n: 'Vol directe',   l: 'BCN–Ljubljana, tots els divendres' },
             { n: '27 circuits',   l: 'Disponibles per a 2026' },
-          ].map(({ n, l }) => (
-            <div key={l} className="trust-item">
+          ].map(({ n, l }, i) => (
+            <div key={l} className={`trust-item reveal reveal-d${i}`}>
               <span className="trust-value">{n}</span>
               <span className="trust-label">{l}</span>
             </div>
@@ -186,14 +197,7 @@ export default function Home() {
             <h2 className="section-title">On vols anar?</h2>
             <p className="section-subtitle">Sis col·leccions de viatges curades per l'equip. Des de mercats de Nadal fins a aurores boreals.</p>
           </header>
-          <div className="cat-nav__grid">
-            {Object.entries(SUBCATS).map(([key, cat], i) => {
-              const count = cat.ids.filter(id => tripMap[id]).length
-              return (
-                <CatTile key={key} catKey={key} cat={cat} count={count} index={i} />
-              )
-            })}
-          </div>
+          <CatSlider entries={Object.entries(SUBCATS)} tripMap={tripMap} />
         </div>
       </section>
 
@@ -210,13 +214,13 @@ export default function Home() {
             className={`cat-section${isNadal ? ' cat-section--nadal' : isAlt ? ' cat-section--alt' : ''}`}
           >
             <div className="container">
-              <header className="cat-section__header">
+              <header className="cat-section__header reveal">
                 {isNadal && <span className="season-tag">Temporada Nadal 2026</span>}
                 <h2 className="section-title">{cat.label}</h2>
                 <p className="section-subtitle">{cat.desc}</p>
               </header>
 
-              <div className={`trips-grid${isNadal ? ' trips-grid--nadal' : ''}`}>
+              <div className={`trips-grid${isNadal ? ' trips-grid--nadal' : ''} reveal reveal-d1`}>
                 {trips.map(trip => (
                   <TripCard key={trip.id} trip={trip} />
                 ))}
@@ -239,8 +243,8 @@ export default function Home() {
               { num: '02', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu amb Trade Air tots els divendres de juny a setembre. Sense escales, sense esperes.' },
               { num: '03', title: 'Hotels cèntrics',           desc: 'Allotjaments cèntrics o semi-cèntrics. Aprofites cada moment perquè ets al cor de la destinació.' },
               { num: '04', title: 'Grups reduïts',             desc: 'Màxim 25 passatgers per circuit. Atenció personalitzada i l\'experiència d\'un grup íntim.' },
-            ].map(s => (
-              <div key={s.num} className="why-card">
+            ].map((s, i) => (
+              <div key={s.num} className={`why-card reveal reveal-d${i}`}>
                 <span className="why-card__num">{s.num}</span>
                 <h3 className="why-card__title">{s.title}</h3>
                 <p className="why-card__desc">{s.desc}</p>
@@ -269,47 +273,59 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── NEWSLETTER ───────────────────────────────────────────────────── */}
-      <NewsletterSection />
-
     </main>
   )
 }
 
-// ── Cat Tile — tilt 3D ────────────────────────────────────────────────────────
-function CatTile({ catKey, cat, count, index }) {
-  const ref = useRef(null)
-  const num = String(index + 1).padStart(2, '0')
+// ── Cat Slider ────────────────────────────────────────────────────────────────
+function CatSlider({ entries, tripMap }) {
+  const viewportRef = useRef(null)
+  const [canPrev, setCanPrev] = useState(false)
+  const [canNext, setCanNext] = useState(true)
 
-  function onMove(e) {
-    const el = ref.current
+  const updateArrows = () => {
+    const el = viewportRef.current
     if (!el) return
-    const { left, top, width, height } = el.getBoundingClientRect()
-    const x = (e.clientX - left) / width  - 0.5   // -0.5 → 0.5
-    const y = (e.clientY - top)  / height - 0.5
-    // Atura la transició del transform mentre mou (més fluid)
-    el.style.transition = 'box-shadow .2s ease, background .2s ease'
-    el.style.transform  = `perspective(700px) rotateX(${-y * 9}deg) rotateY(${x * 12}deg) translateY(-6px) scale(1.01)`
+    setCanPrev(el.scrollLeft > 4)
+    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 4)
   }
 
-  function onLeave() {
-    const el = ref.current
+  const scroll = (dir) => {
+    const el = viewportRef.current
     if (!el) return
-    // Torna suaument a la posició original
-    el.style.transition = 'transform .55s cubic-bezier(.23,1,.32,1), box-shadow .4s ease, background .25s ease'
-    el.style.transform  = ''
+    const tile = el.querySelector('.cat-tile')
+    if (!tile) return
+    el.scrollBy({ left: dir * (tile.offsetWidth + 16), behavior: 'smooth' })
   }
 
   return (
-    <a
-      ref={ref}
-      href={`#sec-${catKey}`}
-      className={`cat-tile cat-tile--${catKey}`}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-    >
+    <div className="cat-slider">
+      <button className="cat-slider__btn" onClick={() => scroll(-1)} disabled={!canPrev} aria-label="Anterior">
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
+          <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <div className="cat-slider__viewport" ref={viewportRef} onScroll={updateArrows}>
+        {entries.map(([key, cat], i) => {
+          const count = cat.ids.filter(id => tripMap[id]).length
+          return <CatTile key={key} catKey={key} cat={cat} count={count} index={i} />
+        })}
+      </div>
+      <button className="cat-slider__btn" onClick={() => scroll(1)} disabled={!canNext} aria-label="Següent">
+        <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
+          <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  )
+}
+
+// ── Cat Tile ──────────────────────────────────────────────────────────────────
+function CatTile({ catKey, cat, count, index }) {
+  return (
+    <a href={`#sec-${catKey}`} className={`cat-tile cat-tile--${catKey}`}>
       <div className="cat-tile__accent" />
-      <span className="cat-tile__num" aria-hidden="true">{num}</span>
+      <span className="cat-tile__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
       <strong className="cat-tile__name">{cat.label}</strong>
       <p className="cat-tile__desc">{cat.desc}</p>
       <div className="cat-tile__foot">
@@ -424,35 +440,3 @@ function TripCard({ trip, featured = false }) {
   )
 }
 
-// ── Newsletter ────────────────────────────────────────────────────────────────
-function NewsletterSection() {
-  const [email, setEmail] = useState('')
-  const [sent, setSent]   = useState(false)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSent(true); setEmail('')
-    setTimeout(() => setSent(false), 4000)
-  }
-
-  return (
-    <section className="newsletter">
-      <div className="container newsletter__inner">
-        <p className="section-tag newsletter__tag">Inspira't</p>
-        <h2>Rep ofertes exclusives cada setmana</h2>
-        <p>Destinacions amagades, ofertes especials i idees de viatge directament al teu correu.</p>
-        <form className="newsletter__form" onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder={sent ? 'Subscrit correctament — gràcies' : 'El teu correu electrònic'}
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-          <button type="submit" className="btn btn--primary">Subscriure'm</button>
-        </form>
-        <p className="newsletter__note">Sense spam. Cancel·la en qualsevol moment.</p>
-      </div>
-    </section>
-  )
-}
