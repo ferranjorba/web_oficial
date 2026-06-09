@@ -3,9 +3,10 @@
 // L'ordre importa: posiciona primer els que vols vendre més.
 export const SUBCATS = {
   nadal: {
-    label: 'Mercats de Nadal 2026',
-    shortLabel: 'Mercats de Nadal',
+    label: 'Mercats de Nadal 2026',     label_es: 'Mercados de Navidad 2026',
+    shortLabel: 'Mercats de Nadal',     shortLabel_es: 'Mercados de Navidad',
     desc: 'Els mercadets més màgics d\'Europa. Places limitades.',
+    desc_es: 'Los mercadillos más mágicos de Europa. Plazas limitadas.',
     ids: [
       'alsacia-colmar',
       'alsacia-estrasburg',
@@ -19,9 +20,10 @@ export const SUBCATS = {
     ],
   },
   islandia: {
-    label: 'Islàndia',
-    shortLabel: 'Islàndia',
+    label: 'Islàndia',     label_es: 'Islandia',
+    shortLabel: 'Islàndia', shortLabel_es: 'Islandia',
     desc: 'Aurores boreals, guèisers, glaciars i cascades. El destí que tothom vol.',
+    desc_es: 'Auroras boreales, géiseres, glaciares y cascadas. El destino que todos quieren.',
     ids: [
       'joies-islandia',
       'islandia-volta-illa',
@@ -30,9 +32,10 @@ export const SUBCATS = {
     ],
   },
   'eslovenia-croacia': {
-    label: 'Eslovènia i Croàcia',
-    shortLabel: 'Eslov. / Croàcia',
+    label: 'Eslovènia i Croàcia',       label_es: 'Eslovenia y Croacia',
+    shortLabel: 'Eslov. / Croàcia',     shortLabel_es: 'Eslov. / Croacia',
     desc: 'Llacs esmeralda, costes adriàtiques i vol directe des de Barcelona.',
+    desc_es: 'Lagos esmeralda, costas adriáticas y vuelo directo desde Barcelona.',
     ids: [
       'la-meravellosa-eslovenia',
       'joies-eslovenia-croacia',
@@ -43,18 +46,20 @@ export const SUBCATS = {
     ],
   },
   noruega: {
-    label: 'Noruega i Fiords',
-    shortLabel: 'Noruega',
+    label: 'Noruega i Fiords',   label_es: 'Noruega y Fiordos',
+    shortLabel: 'Noruega',       shortLabel_es: 'Noruega',
     desc: 'Fiords declarats Patrimoni UNESCO, tren de Flåm i paisatges inoblidables.',
+    desc_es: 'Fiordos declarados Patrimonio UNESCO, tren de Flåm y paisajes inolvidables.',
     ids: [
       'terra-trolls-fiords-alesund',
       'noruega-fiords-sud',
     ],
   },
   mediterrani: {
-    label: 'Europa i Mediterrani',
-    shortLabel: 'Mediterrani',
+    label: 'Europa i Mediterrani',  label_es: 'Europa y Mediterráneo',
+    shortLabel: 'Mediterrani',      shortLabel_es: 'Mediterráneo',
     desc: 'De la Provença a Irlanda, passant per la Pùglia i Turquia.',
+    desc_es: 'De la Provenza a Irlanda, pasando por la Puglia y Turquía.',
     ids: [
       'puglia-taco-italia',
       'provenca-lavanda',
@@ -64,9 +69,10 @@ export const SUBCATS = {
     ],
   },
   asia: {
-    label: 'Àsia',
-    shortLabel: 'Àsia',
+    label: 'Àsia',   label_es: 'Asia',
+    shortLabel: 'Àsia', shortLabel_es: 'Asia',
     desc: 'Temples, te, safaris i civilitzacions mil·lenàries.',
+    desc_es: 'Templos, té, safaris y civilizaciones milenarias.',
     ids: [
       'paraiso-del-indic',
     ],

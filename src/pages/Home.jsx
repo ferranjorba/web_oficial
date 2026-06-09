@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { destinations, SUBCATS } from '../data/destinations'
+import { useLang } from '../context/LangContext'
 import './Home.css'
 
 function normalitza(str) {
@@ -61,6 +62,7 @@ export default function Home() {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const searchWrapRef = useRef(null)
   const navigate = useNavigate()
+  const { lang, t } = useLang()
 
   const suggestions = showSuggestions ? searchTrips(searchWhere) : []
 
@@ -114,23 +116,22 @@ export default function Home() {
           <div className="hero__placeholder-img" />
         </div>
         <div className="container hero__content">
-          <p className="hero__eyebrow">Agència de viatges · Rubí, Barcelona</p>
-          <h1 className="hero__title">Circuits únicament<br />per a tu.</h1>
+          <p className="hero__eyebrow">{t('home.hero.eyebrow')}</p>
+          <h1 className="hero__title">{t('home.hero.title')[0]}<br />{t('home.hero.title')[1]}</h1>
           <p className="hero__subtitle">
-            Grups de màxim 25 persones, sortida garantida des de 2.<br />
-            El viatge que vols, quan el vols.
+            {t('home.hero.subtitle').split('\n').map((l, i) => <span key={i}>{l}{i === 0 && <br />}</span>)}
           </p>
           <div className="hero__actions">
-            <a href="#categories" className="btn btn--primary">Veure destinacions</a>
-            <Link to="/contacte" className="btn btn--ghost">Parla amb un expert</Link>
+            <a href="#categories" className="btn btn--primary">{t('home.hero.cta1')}</a>
+            <Link to="/contacte" className="btn btn--ghost">{t('home.hero.cta2')}</Link>
           </div>
           <div className="hero__search-wrap" ref={searchWrapRef}>
             <form className="hero__search" onSubmit={handleSearch}>
               <div className="search-field">
-                <label>On vols anar?</label>
+                <label>{t('home.hero.searchLabel')}</label>
                 <input
                   type="text"
-                  placeholder="Islàndia, Noruega, Eslovènia..."
+                  placeholder={t('home.hero.searchPlaceholder')}
                   value={searchWhere}
                   onChange={handleSearchChange}
                   onFocus={() => searchWhere.length > 0 && setShowSuggestions(true)}
@@ -138,7 +139,7 @@ export default function Home() {
                   autoComplete="off"
                 />
               </div>
-              <button type="submit" className="btn btn--primary search-btn">Buscar</button>
+              <button type="submit" className="btn btn--primary search-btn">{t('home.hero.searchBtn')}</button>
             </form>
 
             {suggestions.length > 0 && (
@@ -172,14 +173,9 @@ export default function Home() {
       {/* ── TRUST BAR ────────────────────────────────────────────────────── */}
       <section className="trust-bar">
         <div className="container trust-bar__grid">
-          {[
-            { n: '2 passatgers',  l: 'Sortida garantida' },
-            { n: 'Màxim 25',      l: 'Persones per grup' },
-            { n: 'Vol directe',   l: 'BCN–Ljubljana, tots els divendres' },
-            { n: '27 circuits',   l: 'Disponibles per a 2026' },
-          ].map(({ n, l }, i) => (
+          {t('home.trust').map(({ v, l }, i) => (
             <div key={l} className={`trust-item reveal reveal-d${i}`}>
-              <span className="trust-value">{n}</span>
+              <span className="trust-value">{v}</span>
               <span className="trust-label">{l}</span>
             </div>
           ))}
@@ -193,9 +189,9 @@ export default function Home() {
       <section className="cat-nav" id="categories">
         <div className="container">
           <header className="section-header">
-            <p className="section-tag">Tots els circuits 2026</p>
-            <h2 className="section-title">On vols anar?</h2>
-            <p className="section-subtitle">Sis col·leccions de viatges curades per l'equip. Des de mercats de Nadal fins a aurores boreals.</p>
+            <p className="section-tag">{t('home.catNav.tag')}</p>
+            <h2 className="section-title">{t('home.catNav.title')}</h2>
+            <p className="section-subtitle">{t('home.catNav.subtitle')}</p>
           </header>
           <CatSlider entries={Object.entries(SUBCATS)} tripMap={tripMap} />
         </div>
@@ -215,9 +211,9 @@ export default function Home() {
           >
             <div className="container">
               <header className="cat-section__header reveal">
-                {isNadal && <span className="season-tag">Temporada Nadal 2026</span>}
-                <h2 className="section-title">{cat.label}</h2>
-                <p className="section-subtitle">{cat.desc}</p>
+                {isNadal && <span className="season-tag">{t('trip.seasonTag')}</span>}
+                <h2 className="section-title">{lang === 'es' ? (cat.label_es || cat.label) : cat.label}</h2>
+                <p className="section-subtitle">{lang === 'es' ? (cat.desc_es || cat.desc) : cat.desc}</p>
               </header>
 
               <div className={`trips-grid${isNadal ? ' trips-grid--nadal' : ''} reveal reveal-d1`}>
@@ -234,16 +230,11 @@ export default function Home() {
       <section className="why-us" id="services">
         <div className="container">
           <header className="section-header section-header--left">
-            <p className="section-tag">Per què triar-nos</p>
-            <h2 className="section-title">El que ens fa diferents</h2>
+            <p className="section-tag">{t('home.whyUs.tag')}</p>
+            <h2 className="section-title">{t('home.whyUs.title')}</h2>
           </header>
           <div className="why-grid">
-            {[
-              { num: '01', title: 'Sortida garantida',         desc: 'Els nostres circuits surten amb un mínim de 2 passatgers. Sense cancel·lacions per falta de grup.' },
-              { num: '02', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu amb Trade Air tots els divendres de juny a setembre. Sense escales, sense esperes.' },
-              { num: '03', title: 'Hotels cèntrics',           desc: 'Allotjaments cèntrics o semi-cèntrics. Aprofites cada moment perquè ets al cor de la destinació.' },
-              { num: '04', title: 'Grups reduïts',             desc: 'Màxim 25 passatgers per circuit. Atenció personalitzada i l\'experiència d\'un grup íntim.' },
-            ].map((s, i) => (
+            {t('home.whyUs.items').map((s, i) => (
               <div key={s.num} className={`why-card reveal reveal-d${i}`}>
                 <span className="why-card__num">{s.num}</span>
                 <h3 className="why-card__title">{s.title}</h3>
@@ -262,12 +253,12 @@ export default function Home() {
             <div className="about__img-secondary about__img--placeholder" />
           </div>
           <div className="about__content">
-            <p className="section-tag">Qui som</p>
-            <h2 className="section-title">747 Viatges S.L.</h2>
-            <p>Descripció pendent a preguntar</p>
-            <p>C/ Llobateras, 49 · 08191 Rubí, Barcelona<br />Tel. 935 87 20 79</p>
+            <p className="section-tag">{t('home.about.tag')}</p>
+            <h2 className="section-title">{t('home.about.title')}</h2>
+            <p>{t('home.about.desc')}</p>
+            <p>{t('home.about.address').split('\n').map((l, i) => <span key={i}>{l}{i === 0 && <br />}</span>)}</p>
             <Link to="/contacte" className="btn btn--primary" style={{ marginTop: '28px', display: 'inline-flex' }}>
-              Contacta amb nosaltres
+              {t('home.about.cta')}
             </Link>
           </div>
         </div>
@@ -322,14 +313,17 @@ function CatSlider({ entries, tripMap }) {
 
 // ── Cat Tile ──────────────────────────────────────────────────────────────────
 function CatTile({ catKey, cat, count, index }) {
+  const { lang, t } = useLang()
+  const label = lang === 'es' ? (cat.label_es || cat.label) : cat.label
+  const desc  = lang === 'es' ? (cat.desc_es  || cat.desc)  : cat.desc
   return (
     <a href={`#sec-${catKey}`} className={`cat-tile cat-tile--${catKey}`}>
       <div className="cat-tile__accent" />
       <span className="cat-tile__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-      <strong className="cat-tile__name">{cat.label}</strong>
-      <p className="cat-tile__desc">{cat.desc}</p>
+      <strong className="cat-tile__name">{label}</strong>
+      <p className="cat-tile__desc">{desc}</p>
       <div className="cat-tile__foot">
-        <span className="cat-tile__count">{count} circuits</span>
+        <span className="cat-tile__count">{count} {t('trip.circuits')}</span>
         <span className="cat-tile__arrow">→</span>
       </div>
     </a>
@@ -338,8 +332,10 @@ function CatTile({ catKey, cat, count, index }) {
 
 // ── Featured Section: Eslovènia i Croàcia ─────────────────────────────────────
 function FeaturedSection({ tripMap }) {
+  const { lang, t } = useLang()
   const cat   = SUBCATS['eslovenia-croacia']
   const trips = cat.ids.map(id => tripMap[id]).filter(Boolean).slice(0, 4)
+  const title = lang === 'es' ? (cat.label_es || cat.label) : cat.label
 
   return (
     <section className="featured-section">
@@ -348,27 +344,21 @@ function FeaturedSection({ tripMap }) {
         {/* Franja vol directe */}
         <div className="featured-flight-strip">
           <span className="flight-strip__dot" />
-          <span>
-            <strong>Vol directe exclusiu</strong> — BCN → Ljubljana amb Trade Air,
-            tots els divendres de juny a setembre 2026
-          </span>
+          <span>{t('home.featured.strip')}</span>
           <Link to="/categoria/eslovenia-croacia" className="flight-strip__link">
-            Veure sortides →
+            {t('home.featured.stripLink')}
           </Link>
         </div>
 
         {/* Capçalera */}
         <div className="featured-section__head">
           <div>
-            <p className="section-tag">Recomanat per l'equip</p>
-            <h2 className="section-title">Eslovènia i Croàcia</h2>
-            <p className="section-subtitle">
-              Llacs esmeralda, costes adriàtiques i vol directe des de Barcelona.
-              Els circuits més sol·licitats de la temporada.
-            </p>
+            <p className="section-tag">{t('home.featured.tag')}</p>
+            <h2 className="section-title">{title}</h2>
+            <p className="section-subtitle">{t('home.featured.subtitle')}</p>
           </div>
           <Link to="/categoria/eslovenia-croacia" className="featured-section__all">
-            Veure tots els {cat.ids.length} circuits →
+            {t('home.featured.allLink', { n: cat.ids.length })}
           </Link>
         </div>
 
@@ -386,6 +376,7 @@ function FeaturedSection({ tripMap }) {
 
 // ── Trip Card ─────────────────────────────────────────────────────────────────
 function TripCard({ trip, featured = false }) {
+  const { t } = useLang()
   const nextDep    = getNextDep(trip)
   const guaranteed = hasGuaranteed(trip)
 
@@ -397,7 +388,7 @@ function TripCard({ trip, featured = false }) {
           style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
         />
         {guaranteed && (
-          <span className="trip-card__stamp">Sortida assegurada</span>
+          <span className="trip-card__stamp">{t('trip.guaranteed')}</span>
         )}
       </Link>
 
@@ -413,9 +404,9 @@ function TripCard({ trip, featured = false }) {
         {nextDep && (
           <p className="trip-card__dep">
             <span className="dep-dot" />
-            Pròxima sortida — <strong>{formatShortDate(nextDep.date)}</strong>
+            {t('trip.nextDep')} — <strong>{formatShortDate(nextDep.date)}</strong>
             {nextDep.status === 'GUARANTEED' && !guaranteed && (
-              <span className="dep-gtd"> · assegurada</span>
+              <span className="dep-gtd"> · {t('trip.depAssured')}</span>
             )}
           </p>
         )}
@@ -424,15 +415,15 @@ function TripCard({ trip, featured = false }) {
           <div className="trip-card__price">
             {trip.price ? (
               <>
-                <span className="price-label">Des de</span>
+                <span className="price-label">{t('trip.from')}</span>
                 <span className="price-value">{trip.price.toLocaleString('ca')} €</span>
               </>
             ) : (
-              <span className="price-consult">Preu a consultar</span>
+              <span className="price-consult">{t('trip.priceConsult')}</span>
             )}
           </div>
           <Link to={`/viatge/${trip.id}`} className="trip-card__cta">
-            Descobrir <span>→</span>
+            {t('trip.discover')} <span>→</span>
           </Link>
         </div>
       </div>

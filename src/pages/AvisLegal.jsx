@@ -12,7 +12,7 @@ export default function AvisLegal() {
           <p>En compliment de la Llei 34/2002, d'11 de juliol, de Serveis de la Societat de la Informació i del Comerç Electrònic (LSSICE), s'informa que el titular d'aquest lloc web és:</p>
           <ul>
             <li><strong>Raó social:</strong> 747 Viatges S.L.</li>
-            <li><strong>CIF:</strong> [PENDENT]</li>
+            <li><strong>CIF:</strong> B-65511628</li>
             <li><strong>Domicili social:</strong> Carrer de Llobateras, 49, 08191 Rubí, Barcelona</li>
             <li><strong>Telèfon:</strong> 935 87 20 79</li>
             <li><strong>Correu electrònic:</strong> [PENDENT]</li>
