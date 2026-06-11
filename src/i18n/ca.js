@@ -38,11 +38,17 @@ export default {
     whyUs: {
       tag: 'Per què triar-nos',
       title: 'El que ens fa diferents',
+      stats: [
+        { v: '10+',      l: 'Anys d\'experiència' },
+        { v: 'Màx. 25',  l: 'Persones per grup' },
+        { v: 'Des de 2', l: 'Sortida garantida' },
+        { v: 'GC-2061',  l: 'Llicència oficial' },
+      ],
       items: [
-        { num: '01', title: 'Sortida garantida',         desc: 'Els nostres circuits surten amb un mínim de 2 passatgers. Sense cancel·lacions per falta de grup.' },
-        { num: '02', title: 'Vol directe BCN–Ljubljana', desc: 'Vol directe exclusiu amb Trade Air tots els divendres de juny a setembre. Sense escales, sense esperes.' },
-        { num: '03', title: 'Hotels cèntrics',           desc: 'Allotjaments cèntrics o semi-cèntrics. Aprofites cada moment perquè ets al cor de la destinació.' },
-        { num: '04', title: 'Grups reduïts',             desc: 'Màxim 25 passatgers per circuit. Atenció personalitzada i l\'experiència d\'un grup íntim.' },
+        { title: 'Sortida garantida des de 2 persones',   desc: 'Sou 2? El viatge surt igualment. Sense mínims impossibles ni cancel·lacions d\'última hora. Ho prometem.' },
+        { title: 'L\'únic vol directe BCN → Ljubljana',   desc: 'Vols directes exclusius amb Trade Air tots els divendres de juny a setembre. Sense escales, sense rodeos.' },
+        { title: 'Una agència real, no només una web',    desc: 'Fundats el 2014, llicència GC-2061 i oficina física a Rubí. Pots venir a veure\'ns en persona. Som aquí.' },
+        { title: 'Grups de màxim 25 persones',            desc: 'El grup petit canvia l\'experiència. Més atenció del guia, més flexibilitat, més moments autèntics.' },
       ],
     },
     about: {

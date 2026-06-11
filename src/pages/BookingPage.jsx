@@ -276,7 +276,7 @@ export default function BookingPage() {
                   </div>
                 )}
 
-                <div className="form-row">
+                <div className={roomTypes.length > 1 ? 'form-row' : undefined}>
                   <div className="form-group">
                     <label htmlFor="passatgers">Passatgers</label>
                     <select id="passatgers" name="passatgers" value={form.passatgers} onChange={handleChange}>

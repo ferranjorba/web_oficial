@@ -1,6 +1,17 @@
 import { useParams, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { destinations } from '../data/destinations'
 import './TripDetail.css'
+
+const EASE = [0.25, 0.1, 0.25, 1]
+const itinContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+}
+const itinItemVariants = {
+  hidden:  { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: EASE } },
+}
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
@@ -32,7 +43,12 @@ export default function TripDetail() {
           style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
         />
         <div className="trip-detail__hero-overlay" />
-        <div className="container trip-detail__hero-content">
+        <motion.div
+          className="container trip-detail__hero-content"
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.1 }}
+        >
           <p className="trip-detail__eyebrow">
             {trip.country}{trip.duration ? <><span className="eyebrow-sep">·</span>{trip.duration}</> : ''}
           </p>
@@ -44,7 +60,7 @@ export default function TripDetail() {
             {trip.hotelCategory  && <span>{trip.hotelCategory}</span>}
             {trip.meals          && <span>{trip.meals}</span>}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* ── HIGHLIGHTS ───────────────────────────────────────────────────── */}
@@ -93,9 +109,15 @@ export default function TripDetail() {
           {trip.itinerary?.length > 0 && (
             <section className="trip-section">
               <h2 className="trip-section__title">Itinerari dia a dia</h2>
-              <div className="itinerary">
+              <motion.div
+                className="itinerary"
+                variants={itinContainerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-60px' }}
+              >
                 {trip.itinerary.map(day => (
-                  <div key={day.day} className="itinerary__day">
+                  <motion.div key={day.day} className="itinerary__day" variants={itinItemVariants}>
                     <div className="itinerary__day-num">
                       <span className="day-label">Dia</span>
                       <strong className="day-number">{day.day}</strong>
@@ -107,9 +129,9 @@ export default function TripDetail() {
                       </h3>
                       <p>{day.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </section>
           )}
 
@@ -187,7 +209,13 @@ export default function TripDetail() {
         </div>
 
         {/* ── SIDEBAR ──────────────────────────────────────────────────── */}
-        <aside className="trip-detail__sidebar">
+        <motion.aside
+          className="trip-detail__sidebar"
+          initial={{ opacity: 0, x: 32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.15 }}
+        >
           <div className="booking-card">
 
             {/* Preu */}
@@ -299,7 +327,7 @@ export default function TripDetail() {
             )}
 
           </div>
-        </aside>
+        </motion.aside>
       </div>
     </main>
   )

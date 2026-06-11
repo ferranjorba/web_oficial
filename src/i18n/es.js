@@ -38,11 +38,17 @@ export default {
     whyUs: {
       tag: 'Por qué elegirnos',
       title: 'Lo que nos hace diferentes',
+      stats: [
+        { v: '10+',      l: 'Años de experiencia' },
+        { v: 'Máx. 25',  l: 'Personas por grupo' },
+        { v: 'Desde 2',  l: 'Salida garantizada' },
+        { v: 'GC-2061',  l: 'Licencia oficial' },
+      ],
       items: [
-        { num: '01', title: 'Salida garantizada',        desc: 'Nuestros circuitos salen con un mínimo de 2 pasajeros. Sin cancelaciones por falta de grupo.' },
-        { num: '02', title: 'Vuelo directo BCN–Ljubljana', desc: 'Vuelo directo exclusivo con Trade Air todos los viernes de junio a septiembre. Sin escalas, sin esperas.' },
-        { num: '03', title: 'Hoteles céntricos',          desc: 'Alojamientos céntricos o semi-céntricos. Aprovechas cada momento porque estás en el corazón del destino.' },
-        { num: '04', title: 'Grupos reducidos',           desc: 'Máximo 25 pasajeros por circuito. Atención personalizada y la experiencia de un grupo íntimo.' },
+        { title: 'Salida garantizada desde 2 personas',    desc: '¿Sois 2? El viaje sale igual. Sin mínimos imposibles ni cancelaciones de última hora. Lo prometemos.' },
+        { title: 'El único vuelo directo BCN → Ljubljana', desc: 'Vuelos directos exclusivos con Trade Air todos los viernes de junio a septiembre. Sin escalas, sin rodeos.' },
+        { title: 'Una agencia real, no solo una web',      desc: 'Fundados en 2014, licencia GC-2061 y oficina física en Rubí. Puedes venir a vernos en persona. Estamos aquí.' },
+        { title: 'Grupos de máximo 25 personas',           desc: 'El grupo pequeño cambia la experiencia. Más atención del guía, más flexibilidad, más momentos auténticos.' },
       ],
     },
     about: {

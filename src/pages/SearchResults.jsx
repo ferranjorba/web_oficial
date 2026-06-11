@@ -1,6 +1,19 @@
 import { useSearchParams, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { destinations } from '../data/destinations'
+import { useLang } from '../context/LangContext'
 import './SearchResults.css'
+import './CategoryPage.css'
+
+const EASE = [0.25, 0.1, 0.25, 1]
+const cardContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+}
+const cardVariants = {
+  hidden:  { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+}
 
 const MONTHS_CA = ['gen','feb','mar','abr','mai','jun','jul','ago','set','oct','nov','des']
 
@@ -41,6 +54,8 @@ function getNextDep(trip) {
 
 export default function SearchResults() {
   const [params] = useSearchParams()
+  const { lang } = useLang()
+  const isEs = lang === 'es'
   const query = params.get('q') || ''
   const q = normalitza(query.trim())
 
@@ -54,82 +69,160 @@ export default function SearchResults() {
       )
     : destinations
 
+  const countText = isEs
+    ? `${results.length} viaje${results.length === 1 ? '' : 's'} encontrado${results.length === 1 ? '' : 's'}`
+    : `${results.length} viatge${results.length === 1 ? '' : 's'} trobat${results.length === 1 ? '' : 's'}`
+
   return (
     <main className="search-page">
       <div className="search-page__header">
         <div className="container">
-          <p className="section-tag" style={{ color: 'rgba(255,255,255,.6)' }}>Cerca</p>
-          <h1 className="section-title" style={{ color: 'white' }}>
-            {query ? `Resultats per "${query}"` : 'Totes les destinacions'}
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,.6)', marginTop: '8px' }}>
-            {results.length} {results.length === 1 ? 'viatge trobat' : 'viatges trobats'}
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: EASE }}
+          >
+            <p className="section-tag" style={{ color: 'var(--color-primary)' }}>
+              {isEs ? 'Búsqueda' : 'Cerca'}
+            </p>
+            <h1 className="section-title" style={{ color: '#fff' }}>
+              {query
+                ? (isEs ? `Resultados para "${query}"` : `Resultats per "${query}"`)
+                : (isEs ? 'Todos los destinos' : 'Totes les destinacions')
+              }
+            </h1>
+            <p style={{ color: 'rgba(255,255,255,.35)', marginTop: '18px', fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase' }}>
+              {countText}
+            </p>
+          </motion.div>
         </div>
       </div>
 
-      <div className="container search-page__grid">
-        {results.length > 0 ? results.map(trip => {
-          const nextDep = getNextDep(trip)
-          const guaranteed = trip.departures?.some(d => d.status === 'GUARANTEED')
-          return (
-            <article key={trip.id} className="trip-card">
-              <Link to={`/viatge/${trip.id}`} className="trip-card__img-wrap">
-                <div
-                  className={`trip-card__img${trip.image ? '' : ' trip-card__img--placeholder'}`}
-                  style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
-                />
-                {guaranteed && <span className="trip-card__stamp">Sortida assegurada</span>}
-              </Link>
-
-              <div className="trip-card__body">
-                <p className="trip-card__kicker">
-                  {trip.country}
-                  {trip.duration && <><span className="kicker-sep">·</span>{trip.duration}</>}
-                </p>
-                <h3 className="trip-card__name">
-                  <Link to={`/viatge/${trip.id}`}>{trip.name}</Link>
-                </h3>
-
-                {nextDep && (
-                  <p className="trip-card__dep">
-                    <span className="dep-dot" />
-                    Pròxima sortida — <strong>{formatShortDate(nextDep.date)}</strong>
-                  </p>
-                )}
-
-                <div className="trip-card__foot">
-                  <div className="trip-card__price">
-                    {trip.price ? (
-                      <>
-                        <span className="price-label">Des de</span>
-                        <span className="price-value">{trip.price.toLocaleString('ca')} €</span>
-                      </>
-                    ) : (
-                      <span className="price-consult">Preu a consultar</span>
-                    )}
-                  </div>
-                  <Link to={`/viatge/${trip.id}`} className="trip-card__cta">
-                    Descobrir <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            </article>
-          )
-        }) : (
+      <motion.div
+        className="container search-page__grid"
+        variants={cardContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {results.length > 0 ? results.map(trip => (
+          <SearchCard key={trip.id} trip={trip} isEs={isEs} />
+        )) : (
           <div className="search-page__empty">
-            <p>No hem trobat resultats per "<strong>{query}</strong>".</p>
-            <p style={{ fontSize: '.9rem', color: 'var(--color-text-light)', marginTop: '-12px' }}>
-              Prova amb un altre terme o{' '}
-              <Link to="/contacte" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>
-                parla amb nosaltres
-              </Link>
-              .
+            <p>
+              {isEs
+                ? <>No hemos encontrado resultados para "<strong>{query}</strong>".</>
+                : <>No hem trobat resultats per "<strong>{query}</strong>".</>
+              }
             </p>
-            <Link to="/" className="btn btn--primary">Tornar a inici</Link>
+            <p style={{ fontSize: '.9rem', color: 'var(--color-text-light)', marginTop: '-12px' }}>
+              {isEs ? 'Prueba con otro término o ' : 'Prova amb un altre terme o '}
+              <Link to="/contacte" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>
+                {isEs ? 'contáctanos' : 'parla amb nosaltres'}
+              </Link>.
+            </p>
+            <Link to="/" className="btn btn--primary">
+              {isEs ? 'Volver al inicio' : 'Tornar a inici'}
+            </Link>
           </div>
         )}
-      </div>
+      </motion.div>
     </main>
+  )
+}
+
+// ── Card helpers ──────────────────────────────────────────────────────────────
+const PlaneIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0011 2v0a1.5 1.5 0 00-1.5 1.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+  </svg>
+)
+const BedIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M2 4v16"/><path d="M2 8h18a2 2 0 012 2v6H2"/><path d="M2 16h20"/><path d="M6 8v-2a2 2 0 012-2h8a2 2 0 012 2v2"/>
+  </svg>
+)
+const ForkIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
+  </svg>
+)
+function CardIncludes({ trip, isEs }) {
+  const items = []
+  const hasFlight = trip.includesFlight || trip.highlights?.some(h => /vol direct|vol inclòs/i.test(h))
+  if (hasFlight) items.push({ icon: 'plane', label: isEs ? 'Vuelo incluido' : 'Vol inclòs' })
+  items.push({ icon: 'bed', label: isEs ? 'Hotel incluido' : 'Hotel inclòs' })
+  const hasMeals = trip.highlights?.some(h => /sopar|esmorzar|pensió|dinar/i.test(h))
+  if (hasMeals) items.push({ icon: 'fork', label: isEs ? 'Àpats inclosos' : 'Àpats inclosos' })
+  return (
+    <div className="ctc-includes">
+      {items.map(item => (
+        <span key={item.icon} className="ctc-includes-item">
+          {item.icon === 'plane' ? <PlaneIcon /> : item.icon === 'bed' ? <BedIcon /> : <ForkIcon />}
+          <span>{item.label}</span>
+        </span>
+      ))}
+    </div>
+  )
+}
+function SearchCard({ trip, isEs }) {
+  const nextDep    = getNextDep(trip)
+  const guaranteed = trip.departures?.some(d => d.status === 'GUARANTEED')
+  const desc       = trip.tagline || null
+
+  return (
+    <motion.article className="cat-trip-card" variants={cardVariants}>
+      <Link to={`/viatge/${trip.id}`} className="cat-trip-card__img-wrap">
+        <div
+          className={`cat-trip-card__img${trip.image ? '' : ' cat-trip-card__img--placeholder'}`}
+          style={trip.image ? { backgroundImage: `url(${trip.image})` } : undefined}
+        />
+        {guaranteed && (
+          <span className="ctc-stamp">
+            {isEs ? 'Salida asegurada' : 'Sortida assegurada'}
+          </span>
+        )}
+      </Link>
+
+      <div className="cat-trip-card__body">
+        <p className="ctc-kicker">
+          {trip.country}
+          {trip.duration && <><span className="ctc-sep"> · </span>{trip.duration}</>}
+        </p>
+        <h3 className="ctc-name">
+          <Link to={`/viatge/${trip.id}`}>{trip.name}</Link>
+        </h3>
+        {desc && <p className="ctc-desc">{desc}</p>}
+        <CardIncludes trip={trip} isEs={isEs} />
+
+        <div className="ctc-bottom">
+          {nextDep && (
+            <p className="ctc-dep">
+              <span className="dep-dot" />
+              {isEs ? 'Próxima salida' : 'Pròxima sortida'} — <strong>{formatShortDate(nextDep.date)}</strong>
+              {nextDep.status === 'GUARANTEED' && (
+                <span className="dep-gtd"> · {isEs ? 'garantizada' : 'assegurada'}</span>
+              )}
+            </p>
+          )}
+          <div className="ctc-foot">
+            <div className="ctc-price">
+              {trip.price ? (
+                <>
+                  <span className="ctc-price-lbl">{isEs ? 'Desde' : 'Des de'}</span>
+                  <span className="ctc-price-val">{trip.price.toLocaleString('ca')} €</span>
+                </>
+              ) : (
+                <span className="ctc-price-consult">
+                  {isEs ? 'Precio a consultar' : 'Preu a consultar'}
+                </span>
+              )}
+            </div>
+            <Link to={`/viatge/${trip.id}`} className="ctc-cta">
+              {isEs ? 'Descubrir' : 'Descobrir'} <span>→</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </motion.article>
   )
 }
