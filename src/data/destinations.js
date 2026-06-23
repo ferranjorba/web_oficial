@@ -2,23 +2,6 @@
 // Cada secció defineix quins viatges es mostren i en quin ordre.
 // L'ordre importa: posiciona primer els que vols vendre més.
 export const SUBCATS = {
-  nadal: {
-    label: 'Mercats de Nadal 2026',     label_es: 'Mercados de Navidad 2026',
-    shortLabel: 'Mercats de Nadal',     shortLabel_es: 'Mercados de Navidad',
-    desc: 'Els mercadets més màgics d\'Europa. Places limitades.',
-    desc_es: 'Los mercadillos más mágicos de Europa. Plazas limitadas.',
-    ids: [
-      'alsacia-colmar',
-      'alsacia-estrasburg',
-      'tirol-baviera',
-      'mercadets-cracovia',
-      'mercadets-flandes',
-      'alsacia-estrasburg-desembre',
-      'mercat-nadal-reims',
-      'mercats-nadal-estocolm',
-      'estambul-pont-desembre',
-    ],
-  },
   islandia: {
     label: 'Islàndia',     label_es: 'Islandia',
     shortLabel: 'Islàndia', shortLabel_es: 'Islandia',
@@ -77,6 +60,23 @@ export const SUBCATS = {
       'paraiso-del-indic',
     ],
   },
+  nadal: {
+    label: 'Mercats de Nadal 2026',     label_es: 'Mercados de Navidad 2026',
+    shortLabel: 'Mercats de Nadal',     shortLabel_es: 'Mercados de Navidad',
+    desc: 'Els mercadets més màgics d\'Europa. Places limitades.',
+    desc_es: 'Los mercadillos más mágicos de Europa. Plazas limitadas.',
+    ids: [
+      'alsacia-colmar',
+      'alsacia-estrasburg',
+      'tirol-baviera',
+      'mercadets-cracovia',
+      'mercadets-flandes',
+      'alsacia-estrasburg-desembre',
+      'mercat-nadal-reims',
+      'mercats-nadal-estocolm',
+      'estambul-pont-desembre',
+    ],
+  },
 }
 
 export const tradeAirFlight = {
@@ -107,11 +107,6 @@ export const destinations = [
     departurePeriod: 'Del 6 de juny al 12 de setembre 2026',
     includesFlight: true,
     departures: [
-      { date: '06/06', supplement: 0, noAirQuota: false },
-      { date: '13/06', supplement: 0, noAirQuota: false },
-      { date: '20/06', supplement: 0, noAirQuota: true },
-      { date: '27/06', supplement: 130, noAirQuota: false },
-      { date: '04/07', supplement: 0, noAirQuota: false },
       { date: '11/07', supplement: 0, noAirQuota: false },
       { date: '18/07', supplement: 0, noAirQuota: false, note: 'Circuit opera al revés' },
       { date: '25/07', supplement: 0, noAirQuota: false },
@@ -233,11 +228,6 @@ export const destinations = [
     departurePeriod: 'Del 3 de juny al 9 de setembre 2026',
     includesFlight: true,
     departures: [
-      { date: '03/06', supplement: 0, noAirQuota: true },
-      { date: '10/06', supplement: 0, noAirQuota: true },
-      { date: '17/06', supplement: 0, noAirQuota: true },
-      { date: '24/06', supplement: 0, noAirQuota: false },
-      { date: '01/07', supplement: 0, noAirQuota: false },
       { date: '08/07', supplement: 0, noAirQuota: false },
       { date: '15/07', supplement: 0, noAirQuota: false, note: 'Circuit opera al revés' },
       { date: '22/07', supplement: 0, noAirQuota: false },
@@ -384,10 +374,6 @@ export const destinations = [
     flight: tradeAirFlight,
     bookingOptions: { circuitAndFlight: 'OPEN', circuitOnly: 'OPEN', flightOnly: 'OPEN' },
     departures: [
-      { date: '2026-06-12', status: 'OPEN' },
-      { date: '2026-06-19', status: 'OPEN' },
-      { date: '2026-06-26', status: 'OPEN' },
-      { date: '2026-07-03', status: 'OPEN' },
       { date: '2026-07-10', status: 'OPEN' },
       { date: '2026-07-17', status: 'OPEN' },
       { date: '2026-07-24', status: 'OPEN' },
@@ -433,8 +419,6 @@ export const destinations = [
     flight: tradeAirFlight,
     bookingOptions: { flightOnly: 'OPEN' },
     departures: [
-      { date: '2026-06-12', status: 'CLOSED', flightStatus: 'OPEN' },
-      { date: '2026-06-26', status: 'OPEN',   flightStatus: 'OPEN' },
       { date: '2026-07-10', status: 'CLOSED', flightStatus: 'OPEN' },
       { date: '2026-07-24', status: 'OPEN',   flightStatus: 'OPEN' },
       { date: '2026-08-07', status: 'OPEN',   flightStatus: 'OPEN' },
@@ -473,8 +457,6 @@ export const destinations = [
     departurePeriod: 'Del 19 de juny al 25 de setembre 2026',
     includesFlight: false,
     departures: [
-      { date: '2026-06-19', status: 'OPEN' },
-      { date: '2026-07-03', status: 'CLOSED' },
       { date: '2026-07-17', status: 'OPEN' },
       { date: '2026-07-31', status: 'OPEN' },
       { date: '2026-08-14', status: 'OPEN' },
@@ -513,7 +495,6 @@ export const destinations = [
     departurePeriod: 'Del 28 de juny al 20 de setembre 2026',
     includesFlight: false,
     departures: [
-      { date: '2026-06-28', status: 'OPEN' },
       { date: '2026-09-06', status: 'OPEN' },
       { date: '2026-09-20', status: 'OPEN' },
     ],
@@ -548,8 +529,6 @@ export const destinations = [
     departurePeriod: 'De maig a octubre 2026',
     includesFlight: false,
     departures: [
-      { date: '2026-05-09', status: 'OPEN' },
-      { date: '2026-06-13', status: 'OPEN' },
       { date: '2026-07-11', status: 'CLOSED' },
       { date: '2026-08-15', status: 'OPEN' },
       { date: '2026-09-12', status: 'OPEN' },
@@ -915,8 +894,6 @@ export const destinations = [
     departurePeriod: 'Del 12 de juny al 18 de setembre 2026',
     includesFlight: false,
     departures: [
-      { date: '2026-06-12', status: 'OPEN' },
-      { date: '2026-06-26', status: 'CLOSED' },
       { date: '2026-07-10', status: 'OPEN' },
       { date: '2026-07-24', status: 'OPEN' },
       { date: '2026-08-07', status: 'OPEN' },
@@ -962,9 +939,7 @@ export const destinations = [
     includesFlight: false,
     hotelCategory: '3*** (tipus Ibis Avignon Centre Gare)',
     meals: '5 dinars + 3 sopars (3 plats + jarra d\'aigua)',
-    departures: [
-      { date: '2026-06-29', status: 'GUARANTEED' },
-    ],
+    departures: [],
     highlights: [
       'Amfiteatre romà Les Arènes de Nimes (entrada inclosa)',
       'Espectacle immersiu Carrières Lumières a Les Baux de Provence',
@@ -1177,9 +1152,6 @@ export const destinations = [
       { night: '6a nit', city: 'Costa Sud', name: 'Hotel Stracta', stars: 3 },
     ],
     departures: [
-      { date: '2026-06-03', status: 'OPEN' },
-      { date: '2026-06-17', status: 'OPEN' },
-      { date: '2026-07-01', status: 'OPEN' },
       { date: '2026-07-22', status: 'OPEN' },
       { date: '2026-08-05', status: 'OPEN' },
       { date: '2026-08-19', status: 'GUARANTEED' },

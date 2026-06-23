@@ -14,7 +14,7 @@ export default {
       cta1: 'Veure destinacions',
       cta2: 'Parla amb un expert',
       searchLabel: 'On vols anar?',
-      searchPlaceholder: 'Islàndia, Noruega, Eslovènia...',
+      searchPlaceholder: 'Islàndia, Noruega, Mercadets de Nadal...',
       searchBtn: 'Buscar',
     },
     trust: [
@@ -73,7 +73,7 @@ export default {
     title: 'Resultats per a',
     noResults: 'No s\'han trobat resultats per a',
     priceConsult: 'Preu a consultar',
-    placeholder: 'Islàndia, Noruega, Eslovènia...',
+    placeholder: 'Islàndia, Noruega, Mercadets de Nadal...',
   },
   booking: {
     notFound: 'Viatge no trobat.',

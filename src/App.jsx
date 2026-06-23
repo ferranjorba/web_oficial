@@ -14,6 +14,7 @@ const TripDetail    = lazy(() => import('./pages/TripDetail'))
 const BookingPage   = lazy(() => import('./pages/BookingPage'))
 const CategoryPage  = lazy(() => import('./pages/CategoryPage'))
 const AvisLegal     = lazy(() => import('./pages/AvisLegal'))
+const ResultsPage   = lazy(() => import('./pages/ResultsPage'))
 
 function PageShell() {
   return <div style={{ minHeight: '100vh', background: '#FAFAF8' }} />
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/reserva/:id"    element={<BookingPage />} />
           <Route path="/categoria/:cat" element={<CategoryPage />} />
           <Route path="/avis-legal"     element={<AvisLegal />} />
+          <Route path="/resultats"      element={<ResultsPage />} />
         </Routes>
       </Suspense>
       <Footer />

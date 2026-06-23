@@ -46,9 +46,12 @@ export default function Navbar() {
     <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="container navbar__inner">
 
-        <Link to="/" className="navbar__logo" onClick={goHome}>
-          <img src="/logo-goodtravels.png" alt="Good Travels" />
-        </Link>
+        <div className="navbar__brand">
+          <Link to="/" className="navbar__logo" onClick={goHome}>
+            <img src="/logo-goodtravels.png" alt="Good Travels" />
+          </Link>
+          <span className="navbar__legal">GC-2061</span>
+        </div>
 
         <nav className={`navbar__menu${menuOpen ? ' open' : ''}`}>
 

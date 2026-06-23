@@ -85,6 +85,9 @@ function hasGuaranteed(trip) {
 export default function Home() {
   const [searchWhere, setSearchWhere] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [filterMes, setFilterMes] = useState('')
+  const [filterPreu, setFilterPreu] = useState('')
+  const [filterDurada, setFilterDurada] = useState('')
   const searchWrapRef = useRef(null)
   const navigate = useNavigate()
   const { lang, t } = useLang()
@@ -104,7 +107,12 @@ export default function Home() {
   const handleSearch = (e) => {
     e.preventDefault()
     setShowSuggestions(false)
-    if (searchWhere.trim()) navigate(`/cerca?q=${encodeURIComponent(searchWhere)}`)
+    const params = new URLSearchParams()
+    if (searchWhere.trim()) params.set('q', searchWhere.trim())
+    if (filterMes)    params.set('mes', filterMes)
+    if (filterPreu)   params.set('preu', filterPreu)
+    if (filterDurada) params.set('durada', filterDurada)
+    navigate(`/resultats?${params.toString()}`)
   }
   const handleSearchChange = (e) => {
     setSearchWhere(e.target.value)
@@ -157,22 +165,67 @@ export default function Home() {
           </motion.div>
 
           <motion.div className="hero__search-wrap" ref={searchWrapRef} {...fadeUp(0.46)}>
-            <form className="hero__search" onSubmit={handleSearch}>
-              <div className="search-field">
-                <label>{t('home.hero.searchLabel')}</label>
-                <input
-                  type="text"
-                  placeholder={t('home.hero.searchPlaceholder')}
-                  value={searchWhere}
-                  onChange={handleSearchChange}
-                  onFocus={() => searchWhere.length > 0 && setShowSuggestions(true)}
-                  onKeyDown={e => e.key === 'Escape' && setShowSuggestions(false)}
-                  autoComplete="off"
-                />
+            <form className="hero__search-card" onSubmit={handleSearch}>
+              <div className="hero__search-top">
+                <div className="search-field">
+                  <label>{t('home.hero.searchLabel')}</label>
+                  <input
+                    type="text"
+                    placeholder={t('home.hero.searchPlaceholder')}
+                    value={searchWhere}
+                    onChange={handleSearchChange}
+                    onFocus={() => searchWhere.length > 0 && setShowSuggestions(true)}
+                    onKeyDown={e => e.key === 'Escape' && setShowSuggestions(false)}
+                    autoComplete="off"
+                  />
+                </div>
+                <button type="submit" className="btn btn--primary search-btn">
+                  {t('home.hero.searchBtn')}
+                </button>
               </div>
-              <button type="submit" className="btn btn--primary search-btn">
-                {t('home.hero.searchBtn')}
-              </button>
+
+              <div className="hero__filters-row">
+                <div className="hero__filter-group">
+                  <label className="hero__filter-label">
+                    {lang === 'es' ? 'Mes de salida' : 'Mes de sortida'}
+                  </label>
+                  <select className="hero__filter-select" value={filterMes} onChange={e => setFilterMes(e.target.value)}>
+                    <option value="">{lang === 'es' ? 'Cualquier mes' : 'Qualsevol mes'}</option>
+                    <option value="2026-06">{lang === 'es' ? 'Junio 2026' : 'Juny 2026'}</option>
+                    <option value="2026-07">{lang === 'es' ? 'Julio 2026' : 'Juliol 2026'}</option>
+                    <option value="2026-08">{lang === 'es' ? 'Agosto 2026' : 'Agost 2026'}</option>
+                    <option value="2026-09">{lang === 'es' ? 'Septiembre 2026' : 'Setembre 2026'}</option>
+                    <option value="2026-10">{lang === 'es' ? 'Octubre 2026' : 'Octubre 2026'}</option>
+                    <option value="2026-11">{lang === 'es' ? 'Noviembre 2026' : 'Novembre 2026'}</option>
+                    <option value="2026-12">{lang === 'es' ? 'Diciembre 2026' : 'Desembre 2026'}</option>
+                  </select>
+                </div>
+
+                <div className="hero__filter-group">
+                  <label className="hero__filter-label">
+                    {lang === 'es' ? 'Precio máximo' : 'Preu màxim'}
+                  </label>
+                  <select className="hero__filter-select" value={filterPreu} onChange={e => setFilterPreu(e.target.value)}>
+                    <option value="">{lang === 'es' ? 'Cualquier precio' : 'Qualsevol preu'}</option>
+                    <option value="1000">{lang === 'es' ? 'Hasta 1.000 €' : 'Fins 1.000 €'}</option>
+                    <option value="1500">{lang === 'es' ? 'Hasta 1.500 €' : 'Fins 1.500 €'}</option>
+                    <option value="2000">{lang === 'es' ? 'Hasta 2.000 €' : 'Fins 2.000 €'}</option>
+                    <option value="3000">{lang === 'es' ? 'Hasta 3.000 €' : 'Fins 3.000 €'}</option>
+                  </select>
+                </div>
+
+                <div className="hero__filter-group">
+                  <label className="hero__filter-label">
+                    {lang === 'es' ? 'Duración' : 'Durada'}
+                  </label>
+                  <select className="hero__filter-select" value={filterDurada} onChange={e => setFilterDurada(e.target.value)}>
+                    <option value="">{lang === 'es' ? 'Cualquier duración' : 'Qualsevol durada'}</option>
+                    <option value="5-">{lang === 'es' ? 'Hasta 5 días' : 'Fins 5 dies'}</option>
+                    <option value="6-8">6-8 {lang === 'es' ? 'días' : 'dies'}</option>
+                    <option value="9+">9+ {lang === 'es' ? 'días' : 'dies'}</option>
+                  </select>
+                </div>
+              </div>
             </form>
 
             {suggestions.length > 0 && (
@@ -231,6 +284,13 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* ── QUI SOM ──────────────────────────────────────────────────────── */}
+      <QuiSomSection />
+      <GroupPhotosStrip />
+
+      {/* ── EXPERIÈNCIES REALS ───────────────────────────────────────────── */}
+      <TestimonialsSection />
 
       {/* ── DESTACATS: ESLOVÈNIA I CROÀCIA ──────────────────────────────── */}
       <FeaturedSection tripMap={tripMap} />
@@ -300,44 +360,13 @@ export default function Home() {
         )
       })}
 
-      {/* ── PER QUÈ NOSALTRES ────────────────────────────────────────────── */}
-      <WhyUsSection />
-
-      {/* ── TESTIMONIS ───────────────────────────────────────────────────── */}
-      <TestimonialsSection />
-
-      {/* ── NOSALTRES ────────────────────────────────────────────────────── */}
-      <section className="about" id="about">
-        <div className="container about__grid">
-          <motion.div className="about__visual" {...fadeUpView()}>
-            <div className="about__img-main" />
-            <div className="about__img-secondary" />
-          </motion.div>
-          <motion.div className="about__content" {...fadeUpView(0.12)}>
-            <p className="section-tag">{t('home.about.tag')}</p>
-            <h2 className="section-title">{t('home.about.title')}</h2>
-            <p>{t('home.about.desc')}</p>
-            <p>
-              {t('home.about.address').split('\n').map((l, i) => (
-                <span key={i}>{l}{i === 0 && <br />}</span>
-              ))}
-            </p>
-            <Link
-              to="/contacte"
-              className="btn btn--primary"
-              style={{ marginTop: '28px', display: 'inline-flex' }}
-            >
-              {t('home.about.cta')}
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
     </main>
   )
 }
 
 // ── Cat Slider ────────────────────────────────────────────────────────────────
+const GAP = 16
+
 function CatSlider({ entries, tripMap }) {
   const viewportRef = useRef(null)
   const [canPrev, setCanPrev] = useState(false)
@@ -352,8 +381,7 @@ function CatSlider({ entries, tripMap }) {
     setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 4)
     const tile = el.querySelector('.cat-tile')
     if (tile) {
-      const tileW = tile.offsetWidth + 20
-      setActiveIdx(Math.round(el.scrollLeft / tileW))
+      setActiveIdx(Math.round(el.scrollLeft / (tile.offsetWidth + GAP)))
     }
   }
   const scroll = (dir) => {
@@ -361,36 +389,34 @@ function CatSlider({ entries, tripMap }) {
     if (!el) return
     const tile = el.querySelector('.cat-tile')
     if (!tile) return
-    el.scrollBy({ left: dir * (tile.offsetWidth + 20), behavior: 'smooth' })
+    el.scrollBy({ left: dir * (tile.offsetWidth + GAP), behavior: 'smooth' })
   }
   const scrollToIdx = (i) => {
     const el = viewportRef.current
     if (!el) return
     const tile = el.querySelector('.cat-tile')
     if (!tile) return
-    el.scrollTo({ left: i * (tile.offsetWidth + 20), behavior: 'smooth' })
+    el.scrollTo({ left: i * (tile.offsetWidth + GAP), behavior: 'smooth' })
   }
 
   return (
     <div className="cat-slider-wrap">
-      <div className="cat-slider">
-        <button className="cat-slider__btn" onClick={() => scroll(-1)} disabled={!canPrev} aria-label="Anterior">
-          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-            <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <div className="cat-slider__viewport" ref={viewportRef} onScroll={updateState}>
-          {entries.map(([key, cat]) => {
-            const count = cat.ids.filter(id => tripMap[id]).length
-            return <CatTile key={key} catKey={key} cat={cat} count={count} />
-          })}
-        </div>
-        <button className="cat-slider__btn" onClick={() => scroll(1)} disabled={!canNext} aria-label="Següent">
-          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-            <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+      <div className="cat-slider__viewport" ref={viewportRef} onScroll={updateState}>
+        {entries.map(([key, cat]) => {
+          const count = cat.ids.filter(id => tripMap[id]).length
+          return <CatTile key={key} catKey={key} cat={cat} count={count} />
+        })}
       </div>
+      <button className="cat-slider__btn cat-slider__btn--prev" onClick={() => scroll(-1)} disabled={!canPrev} aria-label="Anterior">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button className="cat-slider__btn cat-slider__btn--next" onClick={() => scroll(1)} disabled={!canNext} aria-label="Següent">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
       <div className="cat-slider__dots" role="tablist" aria-label="Navegació carousel">
         {Array.from({ length: total }).map((_, i) => (
           <button
@@ -411,21 +437,17 @@ function CatSlider({ entries, tripMap }) {
 function CatTile({ catKey, cat, count }) {
   const { lang, t } = useLang()
   const label = lang === 'es' ? (cat.label_es || cat.label) : cat.label
-  const desc  = lang === 'es' ? (cat.desc_es  || cat.desc)  : cat.desc
   return (
     <a href={`#sec-${catKey}`} className={`cat-tile cat-tile--${catKey}`}>
-      <div className="cat-tile__accent" />
-      <span className="cat-tile__num" aria-hidden="true" />
-      <strong className="cat-tile__name">{label}</strong>
-      <p className="cat-tile__desc">{desc}</p>
-      <div className="cat-tile__foot">
-        <span className="cat-tile__pill">{count} {t('trip.circuits')}</span>
-        <span className="cat-tile__cta-btn" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </span>
+      <div className="cat-tile__content">
+        <span className="cat-tile__badge">{count} {t('trip.circuits')}</span>
+        <strong className="cat-tile__name">{label}</strong>
       </div>
+      <span className="cat-tile__cta-btn" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </span>
     </a>
   )
 }
@@ -705,38 +727,172 @@ function WhyUsSection() {
   )
 }
 
+// ── Group Photos Strip ────────────────────────────────────────────────────────
+function GroupPhotosStrip() {
+  return (
+    <div className="group-photos">
+      <img
+        src="/images/469555407_1493234761362904_5868655219185168799_n.jpg"
+        alt="Grup de viatgers de Good Travels a Vitòria"
+        loading="lazy"
+      />
+      <img
+        src="/images/472821694_1116127486782483_5179414144763462547_n.jpg"
+        alt="Grup de Good Travels a la Guinness Storehouse de Dublín"
+        loading="lazy"
+      />
+      <img
+        src="/images/472983479_1116133466781885_4160463814950503366_n.jpg"
+        alt="Grup de Good Travels als penya-segats de Slieve League, Irlanda"
+        loading="lazy"
+      />
+    </div>
+  )
+}
+
+// ── Qui Som Section ───────────────────────────────────────────────────────────
+function QuiSomSection() {
+  const { lang } = useLang()
+  const isEs = lang === 'es'
+  return (
+    <section className="qui-som" id="about">
+      <div className="container qui-som__grid">
+
+        <motion.div className="qui-som__text" {...fadeUpView()}>
+          <p className="qui-som__eyebrow">
+            {isEs ? 'SOBRE NOSOTROS' : 'SOBRE NOSALTRES'}
+          </p>
+          <h2 className="qui-som__title">
+            {isEs ? 'Una agencia pequeña con mucha experiencia' : 'Una agència petita amb molta experiència'}
+          </h2>
+          <div className="qui-som__accent" />
+          <p className="qui-som__body">
+            {isEs
+              ? 'Viajar en grupo no debería significar perder la intimidad. En Good Travels hemos construido una manera diferente de hacer circuitos: grupos reducidos, salidas garantizadas y atención personalizada desde el primer contacto. Más de diez años organizando viajes que la gente repite.'
+              : 'Viatjar en grup no hauria de significar perdre la intimitat. A Good Travels hem construït una manera diferent de fer circuits: grups reduïts, sortides garantides i atenció personalitzada des del primer contacte. Més de deu anys organitzant viatges que la gent repeteix.'}
+          </p>
+          <p className="qui-som__body">
+            {isEs
+              ? 'Trabajamos con guías locales que conocen cada rincón del país, hoteles con carácter y vuelos directos desde Barcelona. El resultado es un viaje que se siente hecho para ti, aunque viajes con otros.'
+              : 'Treballem amb guies locals que coneixen cada racó del país, hotels amb caràcter i vols directes des de Barcelona. El resultat és un viatge que se sent fet per a tu, encara que viatgis amb altres.'}
+          </p>
+          <div className="qui-som__stats">
+            <div className="qui-som__stat">
+              <span className="qui-som__stat-val">10+</span>
+              <span className="qui-som__stat-label">{isEs ? "años de experiencia" : "anys d'experiència"}</span>
+            </div>
+            <div className="qui-som__stat-divider" />
+            <div className="qui-som__stat">
+              <span className="qui-som__stat-val">+2.000</span>
+              <span className="qui-som__stat-label">{isEs ? 'viajeros satisfechos' : 'viatgers satisfets'}</span>
+            </div>
+            <div className="qui-som__stat-divider" />
+            <div className="qui-som__stat">
+              <span className="qui-som__stat-val">25</span>
+              <span className="qui-som__stat-label">{isEs ? 'personas máximo por grupo' : 'persones màxim per grup'}</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div className="qui-som__visual" {...fadeUpView(0.12)}>
+          <div className="qui-som__img-wrap">
+            <img
+              className="qui-som__img"
+              src="/images/informativa.jpg"
+              alt="Good Travels — Cada viatge és una nova pàgina del teu relat"
+              loading="lazy"
+              width="600"
+              height="800"
+            />
+            <div className="qui-som__badge">
+              <svg className="qui-som__badge-star" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              <div className="qui-som__badge-text">
+                <span className="qui-som__badge-score">4.5 / 5</span>
+                <span className="qui-som__badge-label">{isEs ? 'Valoración media' : 'Valoració mitjana'}</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
+  )
+}
+
 // ── Testimonials Section ──────────────────────────────────────────────────────
-const TESTIMONIALS = [
+const TESTIMONIALS_CA = [
   {
-    quote: 'Vam anar a Islàndia amb Good Travels i va ser perfecte. El grup petit fa tota la diferència.',
-    author: 'Maria G.',
-    location: 'Barcelona',
-    stars: 5,
+    quote: 'La que millor cuida els seus clients... Si vols un viatge únic i personalitzat, aquest és el teu lloc. En Francesc estarà encantat d\'atendre\'t.',
+    author: 'Graci P.',
+    location: 'Guia Local de Google',
+    trip: 'Google Reviews',
+    initials: 'GP',
+    thumb: '/images/469555407_1493234761362904_5868655219185168799_n.jpg',
   },
   {
-    quote: 'El vol directe des de Barcelona és un luxe. Vam arribar descansats i el circuit va ser increïble.',
-    author: 'Jordi M.',
-    location: 'Terrassa',
-    stars: 5,
+    quote: 'Agència de viatge on el personal sempre està per la feina i pels seus clients. Mai he tingut cap problema, per això tots els viatges, tant nacionals com internacionals, els faig amb aquesta agència.',
+    author: 'Rafael B.',
+    location: 'Guia Local de Google',
+    trip: 'Google Reviews',
+    initials: 'RB',
+    thumb: '/images/472821694_1116127486782483_5179414144763462547_n.jpg',
   },
   {
-    quote: 'Reservar va ser molt fàcil i el guia local coneixia cada racó del país. Repetirem.',
-    author: 'Anna P.',
-    location: 'Rubí',
-    stars: 5,
+    quote: 'Molt contenta d\'haver fet un viatge amb aquesta agència, era la primera vegada però repetiré. Molt bona organització, molt professionals i un bon tracte personal.',
+    author: 'Victoria M.',
+    location: 'Google Reviews',
+    trip: 'Google Reviews',
+    initials: 'VM',
+    thumb: '/images/472983479_1116133466781885_4160463814950503366_n.jpg',
+  },
+]
+const TESTIMONIALS_ES = [
+  {
+    quote: 'La que mejor cuida a sus clientes... Si quieres un viaje único y personalizado, este es tu sitio. Francesc estará encantado de atenderte.',
+    author: 'Graci P.',
+    location: 'Guía Local de Google',
+    trip: 'Google Reviews',
+    initials: 'GP',
+    thumb: '/images/469555407_1493234761362904_5868655219185168799_n.jpg',
+  },
+  {
+    quote: 'Agencia de viaje donde el personal siempre está por la labor y por sus clientes. Nunca he tenido ningún problema, por eso todos mis viajes, nacionales e internacionales, los hago con esta agencia.',
+    author: 'Rafael B.',
+    location: 'Guía Local de Google',
+    trip: 'Google Reviews',
+    initials: 'RB',
+    thumb: '/images/472821694_1116127486782483_5179414144763462547_n.jpg',
+  },
+  {
+    quote: 'Muy contenta de haber hecho un viaje con esta agencia, era la primera vez pero volveré a repetir. Muy buena organización, muy profesionales y un buen trato personal.',
+    author: 'Victoria M.',
+    location: 'Google Reviews',
+    trip: 'Google Reviews',
+    initials: 'VM',
+    thumb: '/images/472983479_1116133466781885_4160463814950503366_n.jpg',
   },
 ]
 
 function TestimonialsSection() {
   const { lang } = useLang()
+  const isEs = lang === 'es'
+  const items = isEs ? TESTIMONIALS_ES : TESTIMONIALS_CA
   return (
     <section className="testimonials">
       <div className="container">
-        <motion.div className="section-head section-head--center" {...fadeUpView()}>
-          <div>
-            <p className="section-tag">{lang === 'es' ? 'Lo que dicen nuestros viajeros' : 'El que diuen els nostres viatgers'}</p>
-            <h2 className="section-title">{lang === 'es' ? 'Experiencias reales' : 'Experiències reals'}</h2>
-          </div>
+        <motion.div className="testimonials__header" {...fadeUpView()}>
+          <p className="qui-som__eyebrow">
+            {isEs ? 'LO QUE DICE LA GENTE' : 'EL QUE DIU LA GENT'}
+          </p>
+          <h2 className="testimonials__title">
+            {isEs ? 'Experiencias reales' : 'Experiències reals'}
+          </h2>
+          <div className="qui-som__accent" />
+          <p className="testimonials__subtitle">
+            {isEs ? 'Más de 2.000 viajeros han confiado en nosotros' : 'Més de 2.000 viatgers han confiat en nosaltres'}
+          </p>
         </motion.div>
 
         <motion.div
@@ -746,18 +902,32 @@ function TestimonialsSection() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          {TESTIMONIALS.map((t) => (
-            <motion.div key={t.author} className="testimonial-card" variants={cardVariants}>
-              <span className="testimonial-card__quote-mark" aria-hidden="true">&ldquo;</span>
-              <div className="testimonial-card__stars">
-                {'★'.repeat(t.stars)}
+          {items.map((item) => (
+            <motion.div key={item.author + item.trip} className="testimonial-card" variants={cardVariants}>
+              <div className="testimonial-card__top">
+                <span className="testimonial-card__stars">★★★★★</span>
+                <span className="testimonial-card__trip">{item.trip}</span>
               </div>
-              <p className="testimonial-card__text">{t.quote}</p>
-              <div className="testimonial-card__author-line" />
-              <p className="testimonial-card__author">
-                <strong>{t.author}</strong>
-                <span className="testimonial-card__location">{t.location}</span>
-              </p>
+              <div className="testimonial-card__body">
+                <span className="testimonial-card__deco" aria-hidden="true">&ldquo;</span>
+                <p className="testimonial-card__text">{item.quote}</p>
+              </div>
+              <div className="testimonial-card__divider" />
+              <div className="testimonial-card__author-row">
+                <div className="testimonial-card__avatar">{item.initials}</div>
+                <div style={{ flex: 1 }}>
+                  <span className="testimonial-card__name">{item.author}</span>
+                  <span className="testimonial-card__location">{item.location}</span>
+                </div>
+                {item.thumb && (
+                  <img
+                    className="testimonial-card__thumb"
+                    src={item.thumb}
+                    alt={`Foto de viatge`}
+                    loading="lazy"
+                  />
+                )}
+              </div>
             </motion.div>
           ))}
         </motion.div>

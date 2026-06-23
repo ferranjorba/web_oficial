@@ -14,7 +14,7 @@ export default {
       cta1: 'Ver destinos',
       cta2: 'Habla con un experto',
       searchLabel: '¿A dónde quieres ir?',
-      searchPlaceholder: 'Islandia, Noruega, Eslovenia...',
+      searchPlaceholder: 'Islandia, Noruega, Mercados de Navidad...',
       searchBtn: 'Buscar',
     },
     trust: [
@@ -73,7 +73,7 @@ export default {
     title: 'Resultados para',
     noResults: 'No se han encontrado resultados para',
     priceConsult: 'Precio a consultar',
-    placeholder: 'Islandia, Noruega, Eslovenia...',
+    placeholder: 'Islandia, Noruega, Mercados de Navidad...',
   },
   booking: {
     notFound: 'Viaje no encontrado.',
