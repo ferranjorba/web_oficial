@@ -667,7 +667,7 @@
 .qui-som__stat-divider { width: 1px; height: 40px; background: #E8E2D9; flex-shrink: 0; }
 
 .qui-som__visual { position: relative; }
-.qui-som__img-wrap { position: relative; }
+.qui-som__img-wrap { position: relative; max-width: 85%; }
 .qui-som__img {
   width: 100%; aspect-ratio: 3/4; border-radius: 8px;
   display: block; object-fit: cover; object-position: center;
