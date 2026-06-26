@@ -5,8 +5,8 @@
 /* ── Hero ─────────────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
-  height: 100vh;
-  min-height: 640px;
+  min-height: 100vh;
+  height: auto;
   display: flex;
   align-items: center;
 }

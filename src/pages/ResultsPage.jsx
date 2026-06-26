@@ -317,6 +317,16 @@ export default function ResultsPage() {
 
   const [sortBy, setSortBy]         = useState('recomanats')
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [searchInput, setSearchInput] = useState(q)
+  useEffect(() => { setSearchInput(q) }, [q])
+
+  function handleSearch(e) {
+    e.preventDefault()
+    const next = new URLSearchParams(searchParams)
+    const v = searchInput.trim()
+    v ? next.set('q', v) : next.delete('q')
+    setSearchParams(next)
+  }
 
   useEffect(() => {
     document.title = q
@@ -374,9 +384,18 @@ export default function ResultsPage() {
           </p>
           <div className="results-header__row">
             <h1 className="results-title">{countLabel}</h1>
-            <Link to="/" className="results-modify">
-              {isEs ? 'Modificar búsqueda →' : 'Modificar cerca →'}
-            </Link>
+            <form className="results-searchbar" onSubmit={handleSearch}>
+              <input
+                type="text"
+                value={searchInput}
+                onChange={e => setSearchInput(e.target.value)}
+                placeholder={isEs ? 'Islandia, Eslovenia…' : 'Islàndia, Eslovènia…'}
+                aria-label={isEs ? 'Buscar destino' : 'Cercar destinació'}
+              />
+              <button type="submit">
+                {isEs ? 'Buscar' : 'Cercar'}
+              </button>
+            </form>
           </div>
           {activePills.length > 0 && (
             <div className="results-pills">

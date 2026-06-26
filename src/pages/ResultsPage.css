@@ -39,15 +39,50 @@
   letter-spacing: -.02em;
 }
 
-.results-modify {
+.results-searchbar {
+  display: flex;
+  flex-shrink: 0;
+  border: 1.5px solid #D8D0C6;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.results-searchbar:focus-within {
+  border-color: var(--color-primary);
+}
+.results-searchbar input {
+  background: #fff;
+  border: none;
+  outline: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--color-dark);
+  width: 220px;
+  min-width: 0;
+}
+.results-searchbar input::placeholder {
+  color: var(--color-text-light);
+}
+.results-searchbar button {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary);
-  text-decoration: none;
-  white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
   flex-shrink: 0;
+  transition: background .2s;
 }
-.results-modify:hover { text-decoration: underline; }
+.results-searchbar button:hover {
+  background: var(--color-brand-orange-d);
+}
+@media (max-width: 640px) {
+  .results-searchbar { width: 100%; }
+  .results-searchbar input { flex: 1; width: auto; }
+}
 
 /* Active filter pills */
 .results-pills {
