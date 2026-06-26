@@ -460,7 +460,7 @@ function FeaturedSection({ tripMap }) {
   const title = lang === 'es' ? (cat.label_es || cat.label) : cat.label
 
   return (
-    <section className="cat-section home-section--white">
+    <section className="cat-section home-section--orange">
       <div className="container">
         <motion.div className="section-head" {...fadeUpView()}>
           <div className="section-head__text">

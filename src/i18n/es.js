@@ -21,7 +21,7 @@ export default {
       { v: '2 pasajeros',    l: 'Salida garantizada' },
       { v: 'Máximo 25',      l: 'Personas por grupo' },
       { v: 'Vuelo directo',  l: 'BCN–Ljubljana, todos los viernes' },
-      { v: '27 circuitos',   l: 'Disponibles para 2026' },
+      { v: '31 circuitos',   l: 'Disponibles para 2026' },
     ],
     featured: {
       strip: 'Vuelo directo exclusivo — BCN → Ljubljana con Trade Air, todos los viernes de junio a septiembre 2026',

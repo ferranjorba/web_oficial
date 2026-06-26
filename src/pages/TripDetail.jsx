@@ -1,5 +1,10 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import {
+  IconPlane, IconBuilding, IconToolsKitchen2, IconUserCheck,
+  IconAward, IconMapPin, IconCamera, IconBus, IconTree,
+  IconAnchor, IconCircleCheck,
+} from '@tabler/icons-react'
 import { destinations } from '../data/destinations'
 import './TripDetail.css'
 
@@ -11,6 +16,29 @@ const itinContainerVariants = {
 const itinItemVariants = {
   hidden:  { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: EASE } },
+}
+const hlContainerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+}
+const hlCardVariants = {
+  hidden:  { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+}
+
+function pickHlIcon(text) {
+  const t = text.toLowerCase()
+  if (/vol\b|aeroport|xàrter|charter/.test(t))                          return IconPlane
+  if (/vaixell|ferry|creuer|naveg|travess|adriàtic/.test(t))            return IconAnchor
+  if (/hotel|allotjament/.test(t))                                       return IconBuilding
+  if (/dinar|àpat|sopar|degustació|menú|cuina|gastro/.test(t))          return IconToolsKitchen2
+  if (/guia|acompany/.test(t))                                           return IconUserCheck
+  if (/unesco|patrimoni/.test(t))                                        return IconAward
+  if (/parc nacional|natura|llac\b|bosc|paisatge|jardí/.test(t))        return IconTree
+  if (/autocar|trasllat|transport/.test(t))                              return IconBus
+  if (/muralles|castell|fortalesa|palau|cova|museu|visita|catedral|basílica|temple|monument/.test(t)) return IconCamera
+  if (/capital|ciutat|vila|poble|barri|port/.test(t))                   return IconMapPin
+  return IconCircleCheck
 }
 
 function formatDate(dateStr) {
@@ -67,18 +95,33 @@ export default function TripDetail() {
       {(trip.highlights?.length > 0 || trip.scenicRoutes?.length > 0) && (
         <div className="trip-detail__highlights">
           <div className="container trip-detail__highlights-inner">
-            {trip.highlights?.map(h => (
-              <div key={h} className="hl-item">
-                <span className="hl-dot" />
-                <span>{h}</span>
-              </div>
-            ))}
-            {trip.scenicRoutes?.map(r => (
-              <div key={r} className="hl-item hl-item--route">
-                <span className="hl-dash" />
-                <span>{r}</span>
-              </div>
-            ))}
+            <p className="hl-label">Què inclou el viatge</p>
+            <motion.div
+              className="hl-grid"
+              variants={hlContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-40px' }}
+            >
+              {trip.highlights?.map(h => {
+                const Icon = pickHlIcon(h)
+                return (
+                  <motion.div key={h} className="hl-card" variants={hlCardVariants}>
+                    <Icon size={20} className="hl-card__icon" aria-hidden="true" />
+                    <span className="hl-card__text">{h}</span>
+                  </motion.div>
+                )
+              })}
+              {trip.scenicRoutes?.map(r => {
+                const Icon = pickHlIcon(r)
+                return (
+                  <motion.div key={r} className="hl-card hl-card--route" variants={hlCardVariants}>
+                    <Icon size={20} className="hl-card__icon" aria-hidden="true" />
+                    <span className="hl-card__text">{r}</span>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
           </div>
         </div>
       )}
